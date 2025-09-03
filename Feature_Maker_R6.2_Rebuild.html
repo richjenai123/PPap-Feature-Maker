@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>PPAP Feature Marker — R6 RESET</title>
+<style>
+  :root{ --bg:#0b0f14; --panel:#111723; --panel-2:#0f1726; --ink:#e6f0ff;
+         --muted:#9bb3d1; --accent:#32e0ff; --accent-2:#6cf4c5; --danger:#ff5d6c; }
+  *{box-sizing:border-box}
+  html,body{height:100%; overflow:hidden}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial}
+  .app{display:grid;grid-template-rows:auto auto 1fr;height:100vh}
+  header{display:flex;align-items:center;gap:.75rem;padding:.6rem 1rem .4rem;border-bottom:1px solid #1e2636;background:linear-gradient(180deg,rgba(19,25,39,.92),rgba(13,18,29,.92))}
+  .logo{width:36px;height:36px;border-radius:10px;background:conic-gradient(from 45deg,var(--accent),var(--accent-2),var(--accent),var(--accent-2));-webkit-mask:radial-gradient(white 63%,transparent 64%) center/100% 100% no-repeat;mask:radial-gradient(white 63%,transparent 64%) center/100% 100% no-repeat}
+  h1{font-size:1.05rem;margin:0;font-weight:650}.sub{color:var(--muted);font-size:.85rem}
+  .toolbar{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;padding:.55rem 1rem;background:var(--panel);border-bottom:1px solid #1b2334}
+  input[type=file]{display:none}
+  button{appearance:none;border:none;outline:none;padding:.5rem .7rem;border-radius:12px;background:#0f1726;color:var(--ink);font-weight:560;display:inline-flex;gap:.5rem;align-items:center;cursor:pointer;box-shadow:inset 0 0 0 1px #1e2a42}
+  button:hover{box-shadow:inset 0 0 0 1px #28436a,0 0 0 6px rgba(50,224,255,.06)}
+  .btn-primary{background:#0e1d2e;box-shadow:inset 0 0 0 1px #204969}
+  .btn-danger{background:#20131a;box-shadow:inset 0 0 0 1px #4a1f2a}
+  .btn-on{box-shadow:inset 0 0 0 2px #2a8dcb,0 0 0 6px rgba(50,224,255,.08);background:#0e1d2e}
+  label.file{padding:.5rem .7rem;border-radius:12px;background:#0f1726;color:var(--ink);font-weight:560;display:inline-flex;gap:.5rem;align-items:center;cursor:pointer;box-shadow:inset 0 0 0 1px #1e2a42}
+  label.file:hover{box-shadow:inset 0 0 0 1px #28436a,0 0 0 6px rgba(50,224,255,.06)}
+  .pill{padding:.25rem .55rem;border-radius:999px;background:#0e1d2e;border:1px solid #204969;color:#9bb3d1;font-size:.85rem}
+  .sep{width:1px;height:28px;background:#1b2334;margin:0 .5rem}
+  .right{margin-left:auto;display:flex;gap:.5rem;align-items:center}
+  .zoom-wrap{display:flex;align-items:center;gap:.5rem;color:var(--muted);min-width:200px}
+  .zoom-wrap input{accent-color:var(--accent);width:160px}
+  .status{margin-left:.5rem;padding:.25rem .55rem;border-radius:999px;background:#0e1d2e;border:1px solid #204969;color:#9bb3d1;font-size:.85rem}
+  .content{display:grid;grid-template-columns:1fr 320px;gap:10px;height:100%;overflow:hidden}
+  .stage{position:relative;background:var(--panel-2);border-top:1px solid #141c2b;border-bottom:1px solid #141c2b;overflow:hidden}
+  canvas{display:block;width:100%;height:100%;touch-action:none}
+  .sidebar{border-left:1px solid #1b2334;background:linear-gradient(180deg,#0f1522,#0c1320);padding:10px 12px;overflow:auto}
+  .sidebar h3{margin:8px 4px;font-size:.95rem}.list{display:grid;gap:8px}
+  .item{border:1px solid #1b2334;padding:8px 10px;border-radius:10px;background:#0b1220;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}
+  .item .id{font-weight:700;color:var(--accent)} .item .xy{color:var(--muted);font-size:.82rem}
+  .item .actions{display:flex;gap:.35rem;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+  .toast{position:fixed;bottom:14px;right:14px;background:#09111e;color:var(--ink);padding:.6rem .75rem;border-radius:10px;border:1px solid #1d2a44;box-shadow:0 10px 30px rgba(0,0,0,.35);opacity:0;pointer-events:none;transform:translateY(8px);transition:all .25s ease}
+  .toast.show{opacity:1;transform:translateY(0)}
+  /* PDF modal */
+  .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.45);z-index:50}
+  .modal.show{display:flex}
+  .dialog{background:#0b1220;color:var(--ink);border:1px solid #1b2640;border-radius:14px;width:min(1000px,92vw);max-height:88vh;overflow:auto;box-shadow:0 20px 80px rgba(0,0,0,.5)}
+  .dialog header{display:flex;align-items:center;gap:.75rem;padding:.8rem 1rem;border-bottom:1px solid #1b2640;background:#0d1a2a}
+  .dialog main{padding:12px}
+  .dialog .controls{display:grid;gap:10px}
+  .dialog .control{display:grid;gap:6px}
+  .dialog input[type=number]{background:#0f1726;color:var(--ink);border:1px solid #1e2a42;border-radius:8px;padding:.4rem .5rem;width:90px}
+  .dialog input[type=range]{accent-color:var(--accent);width:100%}
+  #pdfPreview{width:100%;height:520px;background:#0f1726;border:1px solid #1b2640;border-radius:10px}
+  .statuschip{margin-left:.5rem;padding:.2rem .5rem;border-radius:999px;background:#0e1d2e;border:1px solid #204969;color:#9bb3d1;font-size:.8rem}
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="logo" aria-hidden="true"></div>
+    <div>
+      <h1>PPAP Feature Marker <span class="sub">— annotate drawings & auto-number features</span></h1>
+      <div class="sub">Drop a PNG/JPG or import a PDF page at high DPI.</div>
+    </div>
+    <div class="status" id="status">Ready</div>
+  </header>
+
+  <div class="toolbar">
+    <input id="file" type="file" accept=".png,.jpg,.jpeg,.json"/>
+    <label class="file btn-primary" for="file">📂 Load Image/JSON</label>
+
+    <input id="pdfFile" type="file" accept="application/pdf"/>
+    <label class="file" for="pdfFile">📄 Import PDF</label>
+
+    <span class="pill">Tool</span>
+    <button id="tool-box" class="btn-primary btn-on">◻ Box</button>
+    <button id="tool-arrow">➤ Arrow</button>
+    <button id="mode-draw">▭ Draw</button>
+    <button id="mode-select" class="btn-primary btn-on">⟷ Select</button>
+
+    <button id="btn-zoom-rect" title="Drag a rectangle to zoom">🔍 Zoom Area</button>
+    <button id="btn-fit" title="Fit (F)">⤢ Fit</button>
+    <button id="btn-new" class="btn-danger">🆕 New</button>
+    <button id="btn-auto"># Auto-Number</button>
+    <button id="btn-clear" class="btn-danger">🗑️ Clear</button>
+
+    <div class="right">
+      <div class="zoom-wrap">
+        <span>Zoom</span>
+        <input id="zoom" type="range" min="25" max="400" value="100">
+        <span id="zoomVal">100%</span>
+      </div>
+      <button id="btn-save-png">⬆️ PNG</button>
+      <button id="btn-save-jpg">⬆️ JPG</button>
+      <button id="btn-save-json">⬆️ JSON</button>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="stage" id="stage"><canvas id="c"></canvas></div>
+    <aside class="sidebar">
+      <h3>Features <span id="feat-count">(0)</span></h3>
+      <div class="list" id="list"></div>
+      <p class="sub">Pan: hold <b>Space</b> or middle-mouse. Wheel = zoom. F = Fit.</p>
+    </aside>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<!-- pdf.js CDN (local fallback handled in JS) -->
+<script id="pdfjs-cdn" src="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+<script>(()=>{addEventListener('load',()=>{if(window.pdfjsLib){pdfjsLib.GlobalWorkerOptions.workerSrc='https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js';}})})();</script>
+
+<!-- PDF modal -->
+<div class="modal" id="pdfModal" aria-hidden="true">
+  <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="pdfTitle">
+    <header>
+      <h2 id="pdfTitle" style="margin:0;font-size:1rem">Import PDF page</h2>
+      <span id="pdfMeta" class="sub"></span>
+      <span id="pdfStatus" class="statuschip">pdf.js: checking…</span>
+      <button id="pdfClose" style="margin-left:auto">✖</button>
+    </header>
+    <main>
+      <div class="controls">
+        <div class="control">
+          <label>Page</label>
+          <div style="display:flex;gap:.5rem;align-items:center">
+            <input id="pdfPageNum" type="number" min="1" value="1"/>
+            <input id="pdfPageSlider" type="range" min="1" value="1"/>
+          </div>
+        </div>
+        <div class="control">
+          <label>Resolution (DPI)</label>
+          <div style="display:flex;gap:.5rem;align-items:center">
+            <input id="pdfDpi" type="range" min="144" max="420" value="300"/>
+            <span id="pdfDpiVal" class="sub">300 dpi</span>
+          </div>
+        </div>
+        <div class="control">
+          <button id="pdfImport" class="btn-primary">Import page</button>
+          <button id="pdfCancel">Cancel</button>
+        </div>
+        <div class="sub">Offline? Put <code>vendor/pdfjs/pdf.min.js</code> and <code>vendor/pdfjs/pdf.worker.min.js</code> next to this file.</div>
+      </div>
+      <div style="margin-top:10px"><canvas id="pdfPreview"></canvas></div>
+    </main>
+  </div>
+</div>
+
+<script>
+(function(){
+  // DOM
+  const fileInput = document.getElementById('file');
+  const pdfInput  = document.getElementById('pdfFile');
+  const canvas = document.getElementById('c');
+  const stage  = document.getElementById('stage');
+  const ctx    = canvas.getContext('2d');
+  const list   = document.getElementById('list');
+  const featCount = document.getElementById('feat-count');
+  const toast  = document.getElementById('toast');
+  const zoom   = document.getElementById('zoom');
+  const zoomVal= document.getElementById('zoomVal');
+  const statusEl = document.getElementById('status');
+
+  const btnModeDraw = document.getElementById('mode-draw');
+  const btnModeSelect = document.getElementById('mode-select');
+  const btnToolBox = document.getElementById('tool-box');
+  const btnToolArrow = document.getElementById('tool-arrow');
+  const btnZoomRect = document.getElementById('btn-zoom-rect');
+  const btnFit = document.getElementById('btn-fit');
+  const btnNew = document.getElementById('btn-new');
+  const btnAuto = document.getElementById('btn-auto');
+  const btnClear = document.getElementById('btn-clear');
+  const btnSavePNG = document.getElementById('btn-save-png');
+  const btnSaveJPG = document.getElementById('btn-save-jpg');
+  const btnSaveJSON = document.getElementById('btn-save-json');
+
+  // PDF modal
+  const pdfModal=document.getElementById('pdfModal');
+  const pdfMeta=document.getElementById('pdfMeta');
+  const pdfStatus=document.getElementById('pdfStatus');
+  const pdfClose=document.getElementById('pdfClose');
+  const pdfCancel=document.getElementById('pdfCancel');
+  const pdfImport=document.getElementById('pdfImport');
+  const pdfPageNum=document.getElementById('pdfPageNum');
+  const pdfPageSlider=document.getElementById('pdfPageSlider');
+  const pdfDpi=document.getElementById('pdfDpi');
+  const pdfDpiVal=document.getElementById('pdfDpiVal');
+  const pdfPreview=document.getElementById('pdfPreview');
+  const pdfPrevCtx=pdfPreview.getContext('2d');
+
+  // State
+  let mode='select';
+  let drawTool='box';
+  let view={cx:0,cy:0,scale:1,baseFit:1,wCss:0,hCss:0};
+  let dpr=window.devicePixelRatio||1;
+  let img=new Image(); let imgLoaded=false;
+  let feats=[], nextId=1, selectedId=null;
+  let drawing=false, dragging=false, draggingTag=false;
+  let startPt=null, dragOffset=null, arrowDelta=null, tagOffset=null;
+  let zoomRect=false;
+  let spaceDown=false, panning=false, panStart=null, panStartCx=0, panStartCy=0;
+
+  // Helpers
+  const showToast=(m,ms=1400)=>{toast.textContent=m;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),ms);};
+  const btnOn=(el,on)=>{el.classList.toggle('btn-on',!!on);};
+  const setMode=(m)=>{mode=m; btnOn(btnModeDraw,m==='draw'); btnOn(btnModeSelect,m==='select'); btnOn(btnZoomRect,m==='zoomrect'); updateStatus();};
+  const setTool=(t)=>{drawTool=t; btnOn(btnToolBox,t==='box'); btnOn(btnToolArrow,t==='arrow'); setMode('draw');};
+  const updateStatus=()=>{const mm=mode==='zoomrect'?'Zoom Area':(mode[0].toUpperCase()+mode.slice(1)); statusEl.textContent=`Mode: ${mm} • Tool: ${drawTool==='box'?'Box':'Arrow'}`; stage.style.cursor=(mode==='draw'||mode==='zoomrect')?'crosshair':'default';};
+
+  function fitCanvas(){
+    const r=stage.getBoundingClientRect();
+    view.wCss=r.width; view.hCss=r.height;
+    dpr=window.devicePixelRatio||1;
+    canvas.width=Math.max(1,Math.floor(r.width*dpr));
+    canvas.height=Math.max(1,Math.floor(r.height*dpr));
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    if(imgLoaded){ view.baseFit=Math.min(view.wCss/img.width, view.hCss/img.height); view.scale=(zoom.value/100)*view.baseFit; }
+    draw();
+  }
+  addEventListener('resize',fitCanvas); new ResizeObserver(fitCanvas).observe(stage);
+
+  const imageToScreen=(ix,iy)=>({x:view.wCss/2+(ix-view.cx)*view.scale,y:view.hCss/2+(iy-view.cy)*view.scale});
+  const screenToImage=(sx,sy)=>({x:(sx-view.wCss/2)/view.scale+view.cx,y:(sy-view.hCss/2)/view.scale+view.cy});
+
+  // Draw
+  function draw(){
+    ctx.clearRect(0,0,view.wCss,view.hCss);
+    ctx.imageSmoothingEnabled=false;
+    if(!imgLoaded){ drawGrid(); renderList(); return; }
+    const p=imageToScreen(0,0);
+    ctx.drawImage(img, Math.round(p.x), Math.round(p.y), Math.round(img.width*view.scale), Math.round(img.height*view.scale));
+
+    feats.forEach(f=>{
+      const color = '#32e0ff';
+      ctx.lineWidth=2; ctx.strokeStyle=color; ctx.setLineDash(f.id===selectedId?[6,4]:[]);
+      if(f.type==='box'){
+        const s=imageToScreen(f.x,f.y);
+        ctx.strokeRect(s.x, s.y, f.w*view.scale, f.h*view.scale);
+      }else{
+        const a=imageToScreen(f.x1,f.y1), b=imageToScreen(f.x2,f.y2);
+        drawArrow(ctx,a.x,a.y,b.x,b.y,color);
+      }
+      ctx.setLineDash([]);
+      // tag
+      const tag=(f.label!=null)?String(f.label):'?';
+      ctx.font='bold 14px ui-sans-serif,system-ui';
+      const tw=ctx.measureText(tag).width+16, th=22;
+      let tx=f.tx, ty=f.ty;
+      if(typeof tx!=='number'||typeof ty!=='number'){
+        if(f.type==='box'){ tx=f.x+4; ty=(f.y-th-4<0)?(f.y+4):(f.y-th-4); }
+        else{ tx=f.x2+8; ty=f.y2-th-8; }
+      }
+      const t=imageToScreen(tx,ty);
+      roundRect(ctx,t.x,t.y,tw,th,6,true,false);
+      ctx.fillStyle='#0b0f14cc'; ctx.fill();
+      ctx.fillStyle='#e6f0ff'; ctx.fillText(tag,t.x+6,t.y+th-6);
+    });
+
+    renderList();
+  }
+  function drawGrid(){
+    ctx.fillStyle='#0f1522'; ctx.fillRect(0,0,view.wCss,view.hCss);
+    ctx.strokeStyle='#142038';
+    for(let x=0;x<view.wCss;x+=24){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,view.hCss);ctx.stroke();}
+    for(let y=0;y<view.hCss;y+=24){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(view.wCss,y);ctx.stroke();}
+    ctx.fillStyle='#9bb3d1'; ctx.font='14px ui-sans-serif,system-ui';
+    ctx.fillText('Drop PNG/JPG or click Import PDF',16,28);
+  }
+  function drawArrow(c,x1,y1,x2,y2,color){
+    c.strokeStyle=color; c.beginPath(); c.moveTo(x1,y1); c.lineTo(x2,y2); c.stroke();
+    const a=Math.atan2(y2-y1,x2-x1), len=10;
+    c.beginPath();
+    c.moveTo(x2,y2);
+    c.lineTo(x2 - len*Math.cos(a-Math.PI/7), y2 - len*Math.sin(a-Math.PI/7));
+    c.lineTo(x2 - len*Math.cos(a+Math.PI/7), y2 - len*Math.sin(a+Math.PI/7));
+    c.closePath(); c.fillStyle=color; c.fill();
+  }
+  function roundRect(c,x,y,w,h,r,fill,stroke){
+    if(w<2*r) r=w/2; if(h<2*r) r=h/2;
+    c.beginPath(); c.moveTo(x+r,y);
+    c.arcTo(x+w,y,x+w,y+h,r); c.arcTo(x+w,y+h,x,y+h,r);
+    c.arcTo(x,y+h,x,y,r); c.arcTo(x,y,x+w,y,r);
+    c.closePath(); if(fill) c.fill(); if(stroke) c.stroke();
+  }
+
+  // List
+  function renderList(){
+    featCount.textContent=`(${feats.length})`;
+    list.innerHTML='';
+    feats.forEach(f=>{
+      const div=document.createElement('div'); div.className='item';
+      const meta=document.createElement('div');
+      const id=document.createElement('div'); id.className='id'; id.textContent=(f.label??'—')+(f.type==='arrow'?' • ➤':''); meta.appendChild(id);
+      const xy=document.createElement('div'); xy.className='xy';
+      xy.textContent=(f.type==='box')?`box x:${f.x|0}, y:${f.y|0}, w:${f.w|0}, h:${f.h|0}`
+                                   :`arrow tail(${f.x1|0},${f.y1|0}) → head(${f.x2|0},${f.y2|0})`;
+      meta.appendChild(xy);
+      const actions=document.createElement('div'); actions.className='actions';
+      const b1=document.createElement('button'); b1.textContent='Select'; b1.onclick=()=>{selectedId=f.id; setMode('select'); draw();};
+      const b2=document.createElement('button'); b2.textContent='Delete'; b2.onclick=()=>{feats=feats.filter(x=>x.id!==f.id); if(selectedId===f.id)selectedId=null; draw();};
+      actions.appendChild(b1); actions.appendChild(b2);
+      div.appendChild(meta); div.appendChild(actions);
+      list.appendChild(div);
+    });
+  }
+
+  // Hit helpers
+  function tagRectOnScreen(f){
+    const tag=(f.label!=null)?String(f.label):'?';
+    ctx.font='bold 14px ui-sans-serif,system-ui';
+    const tw=ctx.measureText(tag).width+16, th=22;
+    let tx=f.tx, ty=f.ty;
+    if(typeof tx!=='number'||typeof ty!=='number'){
+      if(f.type==='box'){ tx=f.x+4; ty=(f.y-th-4<0)?(f.y+4):(f.y-th-4); }
+      else{ tx=f.x2+8; ty=f.y2-th-8; }
+    }
+    const p=imageToScreen(tx,ty);
+    return {sx:p.x, sy:p.y, tw, th, txi:tx, tyi:ty};
+  }
+  function nearLine(px,py,x1,y1,x2,y2,thr){
+    const A=px-x1,B=py-y1,C=x2-x1,D=y2-y1; const dot=A*C+B*D, len=C*C+D*D;
+    let t=len!==0?dot/len:-1; t=Math.max(0,Math.min(1,t));
+    const lx=x1+t*C, ly=y1+t*D; const dx=px-lx, dy=py-ly;
+    return (dx*dx+dy*dy)<=thr*thr;
+  }
+  function findHit(px,py){
+    // tag first
+    for(let i=feats.length-1;i>=0;i--){ const f=feats[i]; const r=tagRectOnScreen(f); if(px>=r.sx&&px<=r.sx+r.tw&&py>=r.sy&&py<=r.sy+r.th) return {id:f.id,hitTag:true}; }
+    // shape
+    for(let i=feats.length-1;i>=0;i--){ const f=feats[i];
+      if(f.type==='box'){ const p=imageToScreen(f.x,f.y); if(px>=p.x&&px<=p.x+f.w*view.scale&&py>=p.y&&py<=p.y+f.h*view.scale) return {id:f.id,hitTag:false}; }
+      else{ const a=imageToScreen(f.x1,f.y1), b=imageToScreen(f.x2,f.y2); if(nearLine(px,py,a.x,a.y,b.x,b.y,6)) return {id:f.id,hitTag:false}; }
+    }
+    return null;
+  }
+
+  // Interaction
+  btnModeDraw.addEventListener('click',()=>setMode(mode==='draw'?'select':'draw'));
+  btnModeSelect.addEventListener('click',()=>setMode('select'));
+  btnToolBox.addEventListener('click',()=>setTool('box'));
+  btnToolArrow.addEventListener('click',()=>setTool('arrow'));
+  btnZoomRect.addEventListener('click',()=>setMode(mode==='zoomrect'?'select':'zoomrect'));
+  btnFit.addEventListener('click',()=>{ if(!imgLoaded){showToast('Load an image first');return;} zoom.value=100; zoom.dispatchEvent(new Event('input')); });
+  btnNew.addEventListener('click',()=>{ feats=[]; nextId=1; selectedId=null; imgLoaded=false; img=new Image(); draw(); showToast('New — load an image'); });
+  btnAuto.addEventListener('click',()=>{ let n=1; feats.forEach(f=>f.label=n++); draw(); showToast('Auto-numbered'); });
+  btnClear.addEventListener('click',()=>{ feats=[]; selectedId=null; draw(); showToast('Cleared'); });
+
+  // Mouse + keys
+  addEventListener('keydown',e=>{ if(e.key==='r'||e.key==='R') setMode(mode==='draw'?'select':'draw'); if(e.key==='s'||e.key==='S') setMode('select'); if(e.key==='f'||e.key==='F') btnFit.click(); if(e.code==='Space'){spaceDown=true;} });
+  addEventListener('keyup',e=>{ if(e.code==='Space'){spaceDown=false;panning=false;} });
+
+  stage.addEventListener('wheel', e=>{
+    if(!imgLoaded) return;
+    e.preventDefault();
+    const oldScale=view.scale;
+    const delta=e.deltaY>0?-1:1;
+    const cur=(parseInt(zoom.value,10)||100) + delta*8;
+    const newPercent=Math.max(25,Math.min(400,cur));
+    zoom.value=newPercent; zoomVal.textContent=newPercent+'%';
+    view.scale=(newPercent/100)*view.baseFit;
+
+    // zoom towards mouse position
+    const rect=canvas.getBoundingClientRect();
+    const mx=e.clientX-rect.left, my=e.clientY-rect.top;
+    const before=screenToImage(mx,my);
+    const after=screenToImage(mx,my);
+    view.cx += (before.x-after.x);
+    view.cy += (before.y-after.y);
+    draw();
+  }, {passive:false});
+
+  stage.addEventListener('mousedown', e=>{
+    const p=clientToCanvas(e);
+    if(!imgLoaded) return;
+
+    if(e.button===1 || spaceDown){ // pan
+      panning=true; panStart=p; panStartCx=view.cx; panStartCy=view.cy; return;
+    }
+
+    if(mode==='zoomrect'){ drawing=true; startPt=p; return; }
+
+    if(mode==='draw'){ drawing=true; startPt=screenToImage(p.x,p.y); return; }
+
+    const hit=findHit(p.x,p.y);
+    if(hit){
+      selectedId=hit.id;
+      const f=feats.find(x=>x.id===selectedId);
+      if(hit.hitTag){
+        const tr=tagRectOnScreen(f); draggingTag=true;
+        const ip=screenToImage(p.x,p.y);
+        const halfW=(tr.tw/view.scale)/2, halfH=(tr.th/view.scale)/2;
+        tagOffset={dx: ip.x - (tr.txi + halfW), dy: ip.y - (tr.tyi + halfH)};
+      }else{
+        const ip=screenToImage(p.x,p.y);
+        if(f.type==='box'){ dragOffset={dx:f.w/2, dy:f.h/2}; }
+        else{ arrowDelta={lenx:f.x2-f.x1, leny:f.y2-f.y1}; }
+        dragging=true;
+      }
+    }else{
+      selectedId=null; draw();
+    }
+  });
+
+  stage.addEventListener('mousemove', e=>{
+    if(!imgLoaded) return; const p=clientToCanvas(e);
+
+    if(panning){ const dx=(p.x-panStart.x)/view.scale, dy=(p.y-panStart.y)/view.scale; view.cx=panStartCx-dx; view.cy=panStartCy-dy; draw(); return; }
+
+    if(mode==='zoomrect' && drawing && startPt){ draw(); const x=Math.min(startPt.x,p.x), y=Math.min(startPt.y,p.y); const w=Math.abs(p.x-startPt.x), h=Math.abs(p.y-startPt.y); ctx.setLineDash([6,4]); ctx.strokeStyle='#6cf4c5'; ctx.lineWidth=2; ctx.strokeRect(x,y,w,h); ctx.setLineDash([]); return; }
+
+    if(mode==='draw' && drawing && startPt){
+      const cur=screenToImage(p.x,p.y); draw();
+      if(drawTool==='box'){
+        const x=Math.min(startPt.x,cur.x), y=Math.min(startPt.y,cur.y);
+        const w=Math.abs(cur.x-startPt.x), h=Math.abs(cur.y-startPt.y);
+        const s=imageToScreen(x,y); ctx.setLineDash([6,4]); ctx.strokeStyle='#6cf4c5'; ctx.lineWidth=2; ctx.strokeRect(s.x,s.y,w*view.scale,h*view.scale); ctx.setLineDash([]); 
+      }else{
+        const head=imageToScreen(startPt.x,startPt.y);
+        const tail=imageToScreen(cur.x,cur.y);
+        drawArrow(ctx, tail.x, tail.y, head.x, head.y, '#6cf4c5');
+      }
+      return;
+    }
+
+    if(mode==='select' && dragging && selectedId!=null){
+      const ip=screenToImage(p.x,p.y); const f=feats.find(x=>x.id===selectedId);
+      if(f.type==='box'){ f.x=ip.x - dragOffset.dx; f.y=ip.y - dragOffset.dy; }
+      else{ f.x2=ip.x; f.y2=ip.y; f.x1=f.x2 - arrowDelta.lenx; f.y1=f.y2 - arrowDelta.leny; }
+      draw(); return;
+    }
+
+    if(mode==='select' && draggingTag && selectedId!=null){
+      const ip=screenToImage(p.x,p.y); const f=feats.find(x=>x.id===selectedId);
+      f.tx=ip.x - tagOffset.dx; f.ty=ip.y - tagOffset.dy; draw(); return;
+    }
+  });
+
+  addEventListener('mouseup', ()=>{
+    if(mode==='zoomrect' && drawing && startPt){
+      const r={x:Math.min(startPt.x,lastMouse.x),y:Math.min(startPt.y,lastMouse.y),w:Math.abs(lastMouse.x-startPt.x),h:Math.abs(lastMouse.y-startPt.y)};
+      drawing=false; startPt=null;
+      if(r.w<10||r.h<10){ draw(); return; }
+      const a=screenToImage(r.x,r.y), b=screenToImage(r.x+r.w,r.y+r.h);
+      const iw=Math.abs(b.x-a.x), ih=Math.abs(b.y-a.y);
+      const newScale=Math.min(view.wCss/iw, view.hCss/ih);
+      view.cx=(a.x+b.x)/2; view.cy=(a.y+b.y)/2; view.scale=newScale;
+      zoom.value=Math.max(25,Math.min(400,Math.round((view.scale/view.baseFit)*100)));
+      zoomVal.textContent=zoom.value+'%'; draw(); return;
+    }
+    drawing=false; dragging=false; draggingTag=false; panning=false;
+  });
+
+  let lastMouse={x:0,y:0};
+  stage.addEventListener('mousemove', e=>{ const r=canvas.getBoundingClientRect(); lastMouse.x=e.clientX-r.left; lastMouse.y=e.clientY-r.top; });
+
+  function clientToCanvas(e){ const r=canvas.getBoundingClientRect(); return {x:e.clientX-r.left,y:e.clientY-r.top}; }
+
+  // Drag & drop + file inputs
+  ['dragenter','dragover','dragleave','drop'].forEach(ev=> stage.addEventListener(ev,e=>{e.preventDefault();e.stopPropagation();}));
+  stage.addEventListener('drop', async e=>{ const dt=e.dataTransfer; if(!dt||!dt.files||!dt.files.length) return; const f=dt.files[0]; if(f.type==='application/pdf'){ await openPdfModal(f); } else { loadFile(f); } });
+  fileInput.addEventListener('change',()=>{ const f=fileInput.files[0]; if(!f) return; loadFile(f); fileInput.value=''; });
+  pdfInput.addEventListener('change', async ()=>{ const f=pdfInput.files[0]; if(!f) return; await openPdfModal(f); pdfInput.value=''; });
+
+  // Zoom slider
+  zoom.addEventListener('input', ()=>{ if(!imgLoaded){ zoomVal.textContent=zoom.value+'%'; return; } view.scale=(zoom.value/100)*view.baseFit; zoomVal.textContent=zoom.value+'%'; draw(); });
+
+  // Export
+  function download(name, dataURL){ const a=document.createElement('a'); a.href=dataURL; a.download=name; document.body.appendChild(a); a.click(); a.remove(); }
+  function exportImage(type){
+    if(!imgLoaded){ showToast('Load an image first'); return; }
+    const out=document.createElement('canvas');
+    out.width=img.width; out.height=img.height;
+    const o=out.getContext('2d'); o.imageSmoothingEnabled=false;
+    o.drawImage(img,0,0);
+    // draw overlay at 1:1 image space
+    feats.forEach(f=>{
+      o.lineWidth=2; o.strokeStyle='#32e0ff';
+      if(f.type==='box'){ o.strokeRect(f.x,f.y,f.w,f.h); }
+      else{ drawArrow(o,f.x1,f.y1,f.x2,f.y2,'#32e0ff'); }
+      // tag
+      const tag=(f.label!=null)?String(f.label):'?';
+      o.font='bold 14px ui-sans-serif,system-ui';
+      const tw=o.measureText(tag).width+16, th=22;
+      let tx=f.tx, ty=f.ty;
+      if(typeof tx!=='number'||typeof ty!=='number'){
+        if(f.type==='box'){ tx=f.x+4; ty=(f.y-th-4<0)?(f.y+4):(f.y-th-4); }
+        else{ tx=f.x2+8; ty=f.y2-th-8; }
+      }
+      roundRect(o,tx,ty,tw,th,6,true,false);
+      o.fillStyle='rgba(11,15,20,0.85)'; o.fill();
+      o.fillStyle='#e6f0ff'; o.fillText(tag,tx+6,ty+th-6);
+    });
+    const mime = type==='jpg' ? 'image/jpeg' : 'image/png';
+    const dataURL = out.toDataURL(mime, type==='jpg'?0.92:undefined);
+    download('feature.'+(type==='jpg'?'jpg':'png'), dataURL);
+  }
+  btnSavePNG.addEventListener('click',()=>exportImage('png'));
+  btnSaveJPG.addEventListener('click',()=>exportImage('jpg'));
+  btnSaveJSON.addEventListener('click',()=>{
+    const data={meta:'ppap-feature-json',feats,version:'r6-reset'};
+    const blob=new Blob([JSON.stringify(data)],{type:'application/json'});
+    const url=URL.createObjectURL(blob); download('feature.json',url); URL.revokeObjectURL(url);
+  });
+
+  // Load PNG/JPG/JSON
+  function loadFile(f){
+    const name=f.name.toLowerCase();
+    if(name.endsWith('.json')){
+      const reader=new FileReader();
+      reader.onload=()=>{
+        try{
+          const data=JSON.parse(reader.result);
+          if(data && data.meta==='ppap-feature-json'){
+            feats=(data.feats||[]); nextId=(Math.max(0,...feats.map(x=>x.id||0))+1)||1; selectedId=null; draw(); showToast('Annotations loaded');
+          }else showToast('Not a PPAP Feature JSON');
+        }catch{ showToast('Invalid JSON'); }
+      };
+      reader.readAsText(f); return;
+    }
+    if(!name.endsWith('.png')&&!name.endsWith('.jpg')&&!name.endsWith('.jpeg')){ showToast('Use PNG or JPG'); return; }
+    const url=URL.createObjectURL(f);
+    img=new Image();
+    img.onload=()=>{ URL.revokeObjectURL(url); imgLoaded=true; feats=[]; nextId=1; selectedId=null; view.cx=img.width/2; view.cy=img.height/2; fitCanvas(); requestAnimationFrame(fitCanvas); showToast('Image loaded'); };
+    img.onerror=()=>{ URL.revokeObjectURL(url); showToast('Image failed to load'); };
+    img.src=url;
+  }
+
+  // ===== PDF handling =====
+  async function ensurePdfJs(){
+    if(window.pdfjsLib){ pdfStatus.textContent='pdf.js: CDN'; return true; }
+    try{
+      await loadScript('./vendor/pdfjs/pdf.min.js',2500);
+      if(window.pdfjsLib){ pdfjsLib.GlobalWorkerOptions.workerSrc='./vendor/pdfjs/pdf.worker.min.js'; pdfStatus.textContent='pdf.js: local'; return true; }
+    }catch{}
+    pdfStatus.textContent='pdf.js: not found'; return false;
+  }
+  function loadScript(src,timeoutMs=3000){ return new Promise((res,rej)=>{ const s=document.createElement('script'); s.src=src; s.onload=()=>res(); s.onerror=()=>rej(); document.head.appendChild(s); setTimeout(()=>rej(),timeoutMs); }); }
+
+  async function openPdfModal(file){
+    const ok=await ensurePdfJs(); if(!ok){ showToast('pdf.js unavailable'); return; }
+    pdfModal.classList.add('show'); pdfMeta.textContent=' '+file.name;
+    const ab=await file.arrayBuffer(); const loadingTask=pdfjsLib.getDocument({data:ab});
+    const pdf=await loadingTask.promise;
+    pdfPageNum.max=String(pdf.numPages); pdfPageSlider.max=String(pdf.numPages);
+    pdfPageNum.value='1'; pdfPageSlider.value='1';
+    const renderPrev=async()=>{
+      const pageNo=parseInt(pdfPageNum.value,10)||1;
+      const dpi=parseInt(pdfDpi.value,10)||300; pdfDpiVal.textContent=dpi+' dpi';
+      const page=await pdf.getPage(pageNo); const scale=dpi/72;
+      const vp=page.getViewport({scale});
+      pdfPreview.width=Math.round(vp.width); pdfPreview.height=Math.round(vp.height);
+      pdfPrevCtx.imageSmoothingEnabled=false;
+      await page.render({canvasContext:pdfPrevCtx,viewport:vp}).promise;
+    };
+    pdfPageNum.oninput=()=>{pdfPageSlider.value=pdfPageNum.value; renderPrev();};
+    pdfPageSlider.oninput=()=>{pdfPageNum.value=pdfPageSlider.value; renderPrev();};
+    pdfDpi.oninput=()=>{pdfDpiVal.textContent=pdfDpi.value+' dpi'; renderPrev();};
+    pdfCancel.onclick=pdfClose.onclick=()=>{pdfModal.classList.remove('show');};
+    pdfImport.onclick=async()=>{
+      const pageNo=parseInt(pdfPageNum.value,10)||1;
+      const dpi=parseInt(pdfDpi.value,10)||300;
+      const page=await pdf.getPage(pageNo); const scale=dpi/72; const vp=page.getViewport({scale});
+      const out=document.createElement('canvas'); out.width=Math.round(vp.width); out.height=Math.round(vp.height);
+      const octx=out.getContext('2d'); octx.imageSmoothingEnabled=false;
+      await page.render({canvasContext:octx,viewport:vp}).promise;
+      const dataURL=out.toDataURL('image/png');
+      const tmp=new Image(); tmp.onload=()=>{ img=tmp; imgLoaded=true; feats=[]; nextId=1; selectedId=null; view.cx=img.width/2; view.cy=img.height/2; fitCanvas(); requestAnimationFrame(fitCanvas); showToast(`Imported page ${pageNo} @ ${dpi} dpi`); pdfModal.classList.remove('show'); }; tmp.src=dataURL;
+    };
+    await renderPrev();
+  }
+
+  // Start
+  fitCanvas();
+
+})();
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
