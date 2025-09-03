@@ -574,6 +574,155 @@
 
 })();
 </script>
+<!-- ===== PPAP Feature Maker : Draw Overlay (Rect/Arrow) ===== -->
+<style>
+  #fm-draw-toolbar{
+    position:fixed; right:16px; bottom:16px; z-index:99999;
+    display:flex; gap:6px; padding:6px; border-radius:12px;
+    background:rgba(18,20,24,.92); border:1px solid #2a2f37; backdrop-filter:blur(6px);
+    font:12px/1 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  }
+  #fm-draw-toolbar button{
+    border:1px solid #3a414d; border-radius:9px; padding:6px 10px; cursor:pointer;
+    background:#1b1f27; color:#e7eaf0; user-select:none;
+  }
+  #fm-draw-toolbar button.active{ outline:2px solid #50b6ff; }
+  /* The SVG overlay is injected; these are safety styles if it’s already present */
+  #fm-annot{ position:absolute; inset:0; pointer-events:none; }
+  .fm-annot-hot{ pointer-events:auto; }
+</style>
+
+<div id="fm-draw-toolbar" aria-label="Draw tools">
+  <button type="button" data-fm-tool="rect" title="Draw rectangle (click-drag)">▭ Box</button>
+  <button type="button" data-fm-tool="arrow" title="Draw arrow (click-drag)">➜ Arrow</button>
+  <button type="button" data-fm-tool="clear" title="Clear all annotations">🧹 Clear</button>
+  <button type="button" data-fm-tool="off" title="Exit draw mode (Esc)">✕ Exit</button>
+</div>
+
+<script>
+(() => {
+  // ---- CONFIG ----
+  const STROKE = '#50b6ff';
+  const FILL   = 'rgba(80,182,255,0.10)';
+  const WIDTH  = 2;
+
+  // Find the main visual to annotate (prefer the biggest <img> or <canvas>)
+  function pickTarget() {
+    const nodes = Array.from(document.querySelectorAll('img, canvas'));
+    if (!nodes.length) return document.body; // fallback
+    return nodes.reduce((a,b)=>{
+      const ar = (a.naturalWidth||a.width||a.clientWidth) * (a.naturalHeight||a.height||a.clientHeight);
+      const br = (b.naturalWidth||b.width||b.clientWidth) * (b.naturalHeight||b.height||b.clientHeight);
+      return br > ar ? b : a;
+    });
+  }
+
+  // Ensure an SVG overlay sits on top of the target
+  function ensureOverlay(target){
+    const parent = target.parentElement || document.body;
+    const style  = getComputedStyle(parent);
+    if (style.position === 'static') parent.style.position = 'relative';
+
+    let svg = parent.querySelector('#fm-annot');
+    if (!svg){
+      svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      svg.id = 'fm-annot';
+      svg.setAttribute('width','100%'); svg.setAttribute('height','100%');
+      svg.style.position = 'absolute'; svg.style.left = 0; svg.style.top = 0;
+      svg.style.pointerEvents = 'none'; // toggled on when drawing
+      // Arrowhead
+      const defs = document.createElementNS(svg.namespaceURI,'defs');
+      const marker = document.createElementNS(svg.namespaceURI,'marker');
+      marker.id = 'fm-arrowhead'; marker.setAttribute('orient','auto');
+      marker.setAttribute('markerWidth','8'); marker.setAttribute('markerHeight','8');
+      marker.setAttribute('refX','8'); marker.setAttribute('refY','4');
+      const tip = document.createElementNS(svg.namespaceURI,'path');
+      tip.setAttribute('d','M0,0 L8,4 L0,8 Z'); tip.setAttribute('fill', STROKE);
+      marker.appendChild(tip); defs.appendChild(marker); svg.appendChild(defs);
+      parent.appendChild(svg);
+    }
+    return svg;
+  }
+
+  // Convert mouse coords into SVG coords
+  function svgPoint(svg, evt) {
+    const pt = svg.createSVGPoint();
+    pt.x = evt.clientX; pt.y = evt.clientY;
+    return pt.matrixTransform(svg.getScreenCTM().inverse());
+  }
+
+  const target = pickTarget();
+  const svg = ensureOverlay(target);
+  const toolbar = document.getElementById('fm-draw-toolbar');
+
+  // State
+  let mode = 'off';
+  let current = null; // {el, x0, y0}
+  function setMode(m){
+    mode = m;
+    svg.classList.toggle('fm-annot-hot', m==='rect' || m==='arrow');
+    svg.style.pointerEvents = (m==='rect' || m==='arrow') ? 'auto' : 'none';
+    // Toggle button highlight
+    toolbar.querySelectorAll('button').forEach(b=>b.classList.toggle('active', b.dataset.fmTool===m));
+  }
+
+  toolbar.addEventListener('click', (e)=>{
+    const btn = e.target.closest('button[data-fm-tool]');
+    if(!btn) return;
+    const tool = btn.dataset.fmTool;
+    if (tool==='clear'){ [...svg.querySelectorAll('rect,line')].forEach(n=>n.remove()); return; }
+    if (tool==='off'){ setMode('off'); return; }
+    setMode(tool);
+  });
+
+  window.addEventListener('keydown', (e)=>{ if(e.key==='Escape') setMode('off'); });
+
+  // Drawing interactions
+  svg.addEventListener('mousedown', (e)=>{
+    if (mode!=='rect' && mode!=='arrow') return;
+    e.stopPropagation(); e.preventDefault();
+    const {x,y} = svgPoint(svg, e);
+    if (mode==='rect'){
+      const r = document.createElementNS(svg.namespaceURI,'rect');
+      r.setAttribute('x', x); r.setAttribute('y', y);
+      r.setAttribute('width', 0); r.setAttribute('height', 0);
+      r.setAttribute('fill', FILL);
+      r.setAttribute('stroke', STROKE); r.setAttribute('stroke-width', WIDTH);
+      svg.appendChild(r);
+      current = {el:r, x0:x, y0:y, type:'rect'};
+    } else {
+      const ln = document.createElementNS(svg.namespaceURI,'line');
+      ln.setAttribute('x1', x); ln.setAttribute('y1', y);
+      ln.setAttribute('x2', x); ln.setAttribute('y2', y);
+      ln.setAttribute('stroke', STROKE); ln.setAttribute('stroke-width', WIDTH);
+      ln.setAttribute('marker-end','url(#fm-arrowhead)');
+      svg.appendChild(ln);
+      current = {el:ln, x0:x, y0:y, type:'arrow'};
+    }
+  });
+
+  svg.addEventListener('mousemove', (e)=>{
+    if (!current) return;
+    const {x,y} = svgPoint(svg, e);
+    if (current.type==='rect'){
+      const x1 = Math.min(current.x0, x), y1 = Math.min(current.y0, y);
+      const w = Math.abs(x - current.x0), h = Math.abs(y - current.y0);
+      current.el.setAttribute('x', x1); current.el.setAttribute('y', y1);
+      current.el.setAttribute('width', w); current.el.setAttribute('height', h);
+    } else {
+      current.el.setAttribute('x2', x); current.el.setAttribute('y2', y);
+    }
+  });
+
+  function endDraw(){ current = null; /* it stays in DOM = applied */ }
+  svg.addEventListener('mouseup', endDraw);
+  svg.addEventListener('mouseleave', (e)=>{ if(current) endDraw(); });
+
+  // Start in "off" mode
+  setMode('off');
+})();
+</script>
+<!-- ===== end Draw Overlay ===== -->
 </body>
 </html>
 
