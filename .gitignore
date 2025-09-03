@@ -1,0 +1,21 @@
+# OS cruft
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors/IDE
+.vscode/
+.idea/
+
+# Builds / caches
+dist/
+build/
+.cache/
+*.log
+
+# Node (safe even if you’re not using it yet)
+node_modules/
+
+# Env files (never commit secrets)
+.env
+.env.*
