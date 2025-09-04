@@ -1,55 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>PPAP Feature Marker — R6 RESET</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>PPAP Feature Marker — R6.2 (PDF + Offline + Ask GPT Jen + Comments)</title>
 <style>
-  :root{ --bg:#0b0f14; --panel:#111723; --panel-2:#0f1726; --ink:#e6f0ff;
-         --muted:#9bb3d1; --accent:#32e0ff; --accent-2:#6cf4c5; --danger:#ff5d6c; }
+  :root{ --bg:#0b0f14; --panel:#111723; --panel-2:#0f1726; --ink:#e6f0ff; --muted:#9bb3d1; --accent:#32e0ff; --accent-2:#6cf4c5; --danger:#ff5d6c; }
   *{box-sizing:border-box}
   html,body{height:100%; overflow:hidden}
-  body{margin:0;background:var(--bg);color:var(--ink);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial}
-  .app{display:grid;grid-template-rows:auto auto 1fr;height:100vh}
-  header{display:flex;align-items:center;gap:.75rem;padding:.6rem 1rem .4rem;border-bottom:1px solid #1e2636;background:linear-gradient(180deg,rgba(19,25,39,.92),rgba(13,18,29,.92))}
-  .logo{width:36px;height:36px;border-radius:10px;background:conic-gradient(from 45deg,var(--accent),var(--accent-2),var(--accent),var(--accent-2));-webkit-mask:radial-gradient(white 63%,transparent 64%) center/100% 100% no-repeat;mask:radial-gradient(white 63%,transparent 64%) center/100% 100% no-repeat}
-  h1{font-size:1.05rem;margin:0;font-weight:650}.sub{color:var(--muted);font-size:.85rem}
-  .toolbar{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;padding:.55rem 1rem;background:var(--panel);border-bottom:1px solid #1b2334}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family: ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial}
+  .app{display:grid; grid-template-rows:auto auto 1fr; height:100vh}
+  header{display:flex; align-items:center; gap:.75rem; padding:.6rem 1rem .4rem 1rem; border-bottom:1px solid #1e2636; background:linear-gradient(180deg,rgba(19,25,39,.92),rgba(13,18,29,.92));}
+  .logo{width:36px;height:36px;border-radius:10px;background: conic-gradient(from 45deg, var(--accent), var(--accent-2), var(--accent), var(--accent-2)); -webkit-mask: radial-gradient(white 63%, transparent 64%) center/100% 100% no-repeat; mask: radial-gradient(white 63%, transparent 64%) center/100% 100% no-repeat;}
+  h1{font-size:1.05rem;margin:0;font-weight:650}
+  .sub{color:var(--muted); font-size:.85rem}
+  .dev{margin-left:auto;color:#87c7ff;font-weight:600}
+
+  .toolbar{display:flex; flex-wrap:wrap; gap:.5rem; align-items:center; padding:.55rem 1rem; background:var(--panel); border-bottom:1px solid #1b2334; position:relative}
   input[type=file]{display:none}
-  button{appearance:none;border:none;outline:none;padding:.5rem .7rem;border-radius:12px;background:#0f1726;color:var(--ink);font-weight:560;display:inline-flex;gap:.5rem;align-items:center;cursor:pointer;box-shadow:inset 0 0 0 1px #1e2a42}
-  button:hover{box-shadow:inset 0 0 0 1px #28436a,0 0 0 6px rgba(50,224,255,.06)}
-  .btn-primary{background:#0e1d2e;box-shadow:inset 0 0 0 1px #204969}
-  .btn-danger{background:#20131a;box-shadow:inset 0 0 0 1px #4a1f2a}
-  .btn-on{box-shadow:inset 0 0 0 2px #2a8dcb,0 0 0 6px rgba(50,224,255,.08);background:#0e1d2e}
-  label.file{padding:.5rem .7rem;border-radius:12px;background:#0f1726;color:var(--ink);font-weight:560;display:inline-flex;gap:.5rem;align-items:center;cursor:pointer;box-shadow:inset 0 0 0 1px #1e2a42}
-  label.file:hover{box-shadow:inset 0 0 0 1px #28436a,0 0 0 6px rgba(50,224,255,.06)}
+  button{appearance:none;border:none;outline:none;padding:.5rem .7rem;border-radius:12px;background:#0f1726;color:var(--ink); font-weight:560;display:inline-flex;gap:.5rem;align-items:center;cursor:pointer;box-shadow: inset 0 0 0 1px #1e2a42}
+  button:hover{box-shadow:inset 0 0 0 1px #28436a, 0 0 0 6px rgba(50,224,255,.06)}
+  .toolbar label.file{padding:.5rem .7rem;border-radius:12px;background:#0f1726;color:var(--ink); font-weight:560;display:inline-flex;gap:.5rem;align-items:center;cursor:pointer;box-shadow: inset 0 0 0 1px #1e2a42}
+  .toolbar label.file:hover{box-shadow:inset 0 0 0 1px #28436a, 0 0 0 6px rgba(50,224,255,.06)}
+  .btn-primary{background:#0e1d2e; box-shadow: inset 0 0 0 1px #204969}
+  .btn-danger{background:#20131a; box-shadow: inset 0 0 0 1px #4a1f2a}
+  .btn-on{box-shadow: inset 0 0 0 2px #2a8dcb, 0 0 0 6px rgba(50,224,255,.08); background:#0e1d2e}
   .pill{padding:.25rem .55rem;border-radius:999px;background:#0e1d2e;border:1px solid #204969;color:#9bb3d1;font-size:.85rem}
   .sep{width:1px;height:28px;background:#1b2334;margin:0 .5rem}
   .right{margin-left:auto;display:flex;gap:.5rem;align-items:center}
   .zoom-wrap{display:flex;align-items:center;gap:.5rem;color:var(--muted);min-width:200px}
   .zoom-wrap input{accent-color:var(--accent);width:160px}
   .status{margin-left:.5rem;padding:.25rem .55rem;border-radius:999px;background:#0e1d2e;border:1px solid #204969;color:#9bb3d1;font-size:.85rem}
-  .content{display:grid;grid-template-columns:1fr 320px;gap:10px;height:100%;overflow:hidden}
+
+  .menu{position:relative}
+  .menu-panel{position:absolute; top:110%; left:0; min-width:340px; background:#0b1220; border:1px solid #1b2640; border-radius:12px; padding:6px; box-shadow:0 12px 40px rgba(0,0,0,.45); display:none; z-index:20}
+  .menu.open .menu-panel{display:block}
+  .menu-item{display:flex; width:100%; text-align:left; padding:.55rem .7rem; border-radius:10px; background:transparent; box-shadow:none}
+  .menu-item:hover{background:#0e1d2e}
+  .menu-item small{color:#9bb3d1}
+
+  .content{display:grid;grid-template-columns:1fr 320px; gap:10px; height:100%; overflow:hidden}
   .stage{position:relative;background:var(--panel-2);border-top:1px solid #141c2b;border-bottom:1px solid #141c2b;overflow:hidden}
-  canvas{display:block;width:100%;height:100%;touch-action:none}
+  canvas{display:block; width:100%; height:100%; touch-action:none}
   .sidebar{border-left:1px solid #1b2334;background:linear-gradient(180deg,#0f1522,#0c1320);padding:10px 12px;overflow:auto}
-  .sidebar h3{margin:8px 4px;font-size:.95rem}.list{display:grid;gap:8px}
-  .item{border:1px solid #1b2334;padding:8px 10px;border-radius:10px;background:#0b1220;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}
-  .item .id{font-weight:700;color:var(--accent)} .item .xy{color:var(--muted);font-size:.82rem}
-  .item .actions{display:flex;gap:.35rem;align-items:center;flex-wrap:wrap;justify-content:flex-end}
-  .toast{position:fixed;bottom:14px;right:14px;background:#09111e;color:var(--ink);padding:.6rem .75rem;border-radius:10px;border:1px solid #1d2a44;box-shadow:0 10px 30px rgba(0,0,0,.35);opacity:0;pointer-events:none;transform:translateY(8px);transition:all .25s ease}
-  .toast.show{opacity:1;transform:translateY(0)}
-  /* PDF modal */
-  .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.45);z-index:50}
+  .sidebar h3{margin:8px 4px;font-size:.95rem}
+  .list{display:grid; gap:8px}
+  .item{border:1px solid #1b2334; padding:8px 10px; border-radius:10px; background:#0b1220; display:grid; grid-template-columns:1fr auto; gap:10px; align-items:center}
+  .item .id{font-weight:700; color:var(--accent)}
+  .item .xy{color:var(--muted);font-size:.82rem}
+  .item .actions{display:flex; gap:.35rem; align-items:center; flex-wrap:wrap; justify-content:flex-end}
+  .crit{display:inline-flex; gap:.35rem; align-items:center; font-size:.82rem; color:#9bb3d1}
+  .hint{color:#9bb3d1; font-size:.85rem}
+
+  .toast{position:fixed; bottom:14px; right:14px; background:#09111e; color:var(--ink); padding:.6rem .75rem; border-radius:10px; border:1px solid #1d2a44; box-shadow:0 10px 30px rgba(0,0,0,.35); opacity:0; pointer-events:none; transform: translateY(8px); transition: all .25s ease}
+  .toast.show{opacity:1; transform: translateY(0)}
+
+  .modal{position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(0,0,0,.45); z-index:50}
   .modal.show{display:flex}
-  .dialog{background:#0b1220;color:var(--ink);border:1px solid #1b2640;border-radius:14px;width:min(1000px,92vw);max-height:88vh;overflow:auto;box-shadow:0 20px 80px rgba(0,0,0,.5)}
-  .dialog header{display:flex;align-items:center;gap:.75rem;padding:.8rem 1rem;border-bottom:1px solid #1b2640;background:#0d1a2a}
+  .dialog{background:#0b1220; color:var(--ink); border:1px solid #1b2640; border-radius:14px; width:min(1000px,92vw); max-height:88vh; overflow:auto; box-shadow:0 20px 80px rgba(0,0,0,.5)}
+  .dialog header{display:flex; align-items:center; gap:.75rem; padding:.8rem 1rem; border-bottom:1px solid #1b2640; background:#0d1a2a}
   .dialog main{padding:12px}
-  .dialog .controls{display:grid;gap:10px}
-  .dialog .control{display:grid;gap:6px}
-  .dialog input[type=number]{background:#0f1726;color:var(--ink);border:1px solid #1e2a42;border-radius:8px;padding:.4rem .5rem;width:90px}
-  .dialog input[type=range]{accent-color:var(--accent);width:100%}
-  #pdfPreview{width:100%;height:520px;background:#0f1726;border:1px solid #1b2640;border-radius:10px}
+  .dialog footer{display:flex; gap:.5rem; justify-content:flex-end; padding:12px; border-top:1px solid #1b2640}
+  .dialog .close{margin-left:auto}
+
+  .dialog.pdf main{display:grid; grid-template-columns:320px 1fr; gap:14px}
+  .dialog .controls{display:grid; gap:10px}
+  .dialog .control{display:grid; gap:6px}
+  .dialog label{color:#9bb3d1; font-size:.85rem}
+  .dialog input[type=number]{background:#0f1726; color:var(--ink); border:1px solid #1e2a42; border-radius:8px; padding:.4rem .5rem; width:90px}
+  .dialog input[type=range]{accent-color:var(--accent); width:100%}
+  #pdfPreview{width:100%; height:520px; background:#0f1726; border:1px solid #1b2640; border-radius:10px}
   .statuschip{margin-left:.5rem;padding:.2rem .5rem;border-radius:999px;background:#0e1d2e;border:1px solid #204969;color:#9bb3d1;font-size:.8rem}
 </style>
 </head>
@@ -58,18 +78,18 @@
   <header>
     <div class="logo" aria-hidden="true"></div>
     <div>
-      <h1>PPAP Feature Marker <span class="sub">— annotate drawings & auto-number features</span></h1>
+      <h1>PPAP Feature Marker <span class="sub">— annotate drawings & auto‑number features</span></h1>
       <div class="sub">Drop a PNG/JPG or import a PDF page at high DPI.</div>
     </div>
-    <div class="status" id="status">Ready</div>
+    <div class="dev">Built by <b>J&R.•.</b></div>
   </header>
 
   <div class="toolbar">
-    <input id="file" type="file" accept=".png,.jpg,.jpeg,.json"/>
-    <label class="file btn-primary" for="file">📂 Load Image/JSON</label>
+    <input id="file" type="file" accept=".png,.jpg,.jpeg,.json" />
+    <label class="file btn-primary" for="file" title="Load image or annotations">📂 Load Image/JSON</label>
 
-    <input id="pdfFile" type="file" accept="application/pdf"/>
-    <label class="file" for="pdfFile">📄 Import PDF</label>
+    <input id="pdfFile" type="file" accept="application/pdf" />
+    <label class="file" for="pdfFile" title="Import a page from a PDF">📄 Import PDF</label>
 
     <span class="pill">Tool</span>
     <button id="tool-box" class="btn-primary btn-on">◻ Box</button>
@@ -77,78 +97,120 @@
     <button id="mode-draw">▭ Draw</button>
     <button id="mode-select" class="btn-primary btn-on">⟷ Select</button>
 
-    <button id="btn-zoom-rect" title="Drag a rectangle to zoom">🔍 Zoom Area</button>
-    <button id="btn-fit" title="Fit (F)">⤢ Fit</button>
-    <button id="btn-new" class="btn-danger">🆕 New</button>
+    <button id="btn-zoom-rect" title="Drag an area to zoom">🔍 Zoom Area</button>
+    <button id="btn-fit" title="Fit and center (F)">⤢ Fit</button>
+    <button id="btn-new" class="btn-danger" title="New (reset)">🆕 New</button>
+
+    <span id="status" class="status">Mode: Select • Tool: Box</span>
+
     <button id="btn-auto"># Auto-Number</button>
     <button id="btn-clear" class="btn-danger">🗑️ Clear</button>
+    <button id="btn-add-note">📝 Add Comment</button>
+
+    <div class="sep"></div>
+    <span class="pill">Tag</span>
+    <input type="color" id="colTagBg" value="#0b0f14" title="Tag background" />
+    <span class="alpha">α<input type="range" id="colTagBgA" min="40" max="100" value="80" title="BG opacity %" /></span>
+    <input type="color" id="colTagText" value="#e6f0ff" title="Tag text" />
+    <span class="pill">Critical</span>
+    <input type="color" id="colCritBg" value="#4d141b" title="Critical background" />
+    <span class="alpha">α<input type="range" id="colCritBgA" min="40" max="100" value="85" title="BG opacity %" /></span>
+    <input type="color" id="colCritText" value="#ffe6ea" title="Critical text" />
+
+    <div class="sep"></div>
+    <button id="btn-anchors-toggle">⚓ Anchors</button>
+    <button id="btn-anch-nom" title="Place nominal anchor">Nom</button>
+    <button id="btn-anch-min" title="Place min anchor">Min</button>
+    <button id="btn-anch-max" title="Place max anchor">Max</button>
+    <button id="btn-anch-clear" class="btn-danger" title="Clear anchors for selected">Clear</button>
+
+    <div class="sep"></div>
+    <button id="btn-save-png">⬆️ PNG</button>
+    <button id="btn-save-jpg">⬆️ JPG</button>
+    <button id="btn-save-json">⬆️ JSON</button>
 
     <div class="right">
+      <div class="menu" id="askMenuWrap">
+        <button id="btn-ask">🤖 Ask GPT Jen ▾</button>
+        <div class="menu-panel" id="askMenu">
+          <button class="menu-item" data-action="askSoon">Ask me a question about Feature Maker — <small>voice/text (Coming Soon)</small></button>
+          <button class="menu-item" data-action="guide">User Guide</button>
+          <button class="menu-item" data-action="hotkeys">Hotkeys</button>
+        </div>
+      </div>
       <div class="zoom-wrap">
         <span>Zoom</span>
         <input id="zoom" type="range" min="25" max="400" value="100">
         <span id="zoomVal">100%</span>
       </div>
-      <button id="btn-save-png">⬆️ PNG</button>
-      <button id="btn-save-jpg">⬆️ JPG</button>
-      <button id="btn-save-json">⬆️ JSON</button>
     </div>
   </div>
 
   <div class="content">
     <div class="stage" id="stage"><canvas id="c"></canvas></div>
     <aside class="sidebar">
-      <h3>Features <span id="feat-count">(0)</span></h3>
+      <h3>Features <span class="badge" id="feat-count">(0)</span></h3>
       <div class="list" id="list"></div>
-      <p class="sub">Pan: hold <b>Space</b> or middle-mouse. Wheel = zoom. F = Fit.</p>
+      <p class="hint">Tips: R toggles Draw, S = Select. Press F to Fit. Use Zoom Area then drag a rectangle.</p>
     </aside>
   </div>
 </div>
 <div class="toast" id="toast"></div>
 
-<!-- pdf.js CDN (local fallback handled in JS) -->
-<script id="pdfjs-cdn" src="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
-<script>(()=>{addEventListener('load',()=>{if(window.pdfjsLib){pdfjsLib.GlobalWorkerOptions.workerSrc='https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js';}})})();</script>
-
 <!-- PDF modal -->
 <div class="modal" id="pdfModal" aria-hidden="true">
-  <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="pdfTitle">
+  <div class="dialog pdf" role="dialog" aria-modal="true" aria-labelledby="pdfTitle">
     <header>
       <h2 id="pdfTitle" style="margin:0;font-size:1rem">Import PDF page</h2>
       <span id="pdfMeta" class="sub"></span>
       <span id="pdfStatus" class="statuschip">pdf.js: checking…</span>
-      <button id="pdfClose" style="margin-left:auto">✖</button>
+      <button id="pdfClose" class="close">✖</button>
     </header>
     <main>
       <div class="controls">
         <div class="control">
           <label>Page</label>
           <div style="display:flex;gap:.5rem;align-items:center">
-            <input id="pdfPageNum" type="number" min="1" value="1"/>
-            <input id="pdfPageSlider" type="range" min="1" value="1"/>
+            <input id="pdfPageNum" type="number" min="1" value="1" />
+            <input id="pdfPageSlider" type="range" min="1" value="1" />
           </div>
         </div>
         <div class="control">
           <label>Resolution (DPI)</label>
           <div style="display:flex;gap:.5rem;align-items:center">
-            <input id="pdfDpi" type="range" min="144" max="420" value="300"/>
+            <input id="pdfDpi" type="range" min="144" max="420" value="300" />
             <span id="pdfDpiVal" class="sub">300 dpi</span>
           </div>
         </div>
         <div class="control">
-          <button id="pdfImport" class="btn-primary">Import page</button>
-          <button id="pdfCancel">Cancel</button>
+          <label>Actions</label>
+          <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+            <button id="pdfImport" class="btn-primary">Import page</button>
+            <button id="pdfCancel">Cancel</button>
+          </div>
         </div>
-        <div class="sub">Offline? Put <code>vendor/pdfjs/pdf.min.js</code> and <code>vendor/pdfjs/pdf.worker.min.js</code> next to this file.</div>
+        <div class="control">
+          <label>Offline bundle</label>
+          <div class="sub">Place <code>vendor/pdfjs/pdf.min.js</code> and <code>vendor/pdfjs/pdf.worker.min.js</code> next to this HTML. R6 auto-detects them.</div>
+        </div>
       </div>
-      <div style="margin-top:10px"><canvas id="pdfPreview"></canvas></div>
+      <div style="display:grid">
+        <canvas id="pdfPreview"></canvas>
+      </div>
     </main>
+    <footer></footer>
   </div>
 </div>
 
+<!-- Try CDN first; local/offline fallback handled in JS -->
+<script id="pdfjs-cdn" src="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+<script>(function(){ window.addEventListener('load', ()=>{ if(window.pdfjsLib){ pdfjsLib.GlobalWorkerOptions.workerSrc='https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js'; } });})();</script>
+
+
+<!-- Main script START (continues in PART 2/3) -->
 <script>
 (function(){
-  // DOM
+  // --- DOM refs
   const fileInput = document.getElementById('file');
   const pdfInput  = document.getElementById('pdfFile');
   const canvas = document.getElementById('c');
@@ -160,20 +222,36 @@
   const zoom   = document.getElementById('zoom');
   const zoomVal= document.getElementById('zoomVal');
   const statusEl = document.getElementById('status');
+  const askWrap = document.getElementById('askMenuWrap');
+  const askMenu = document.getElementById('askMenu');
 
+  // tools
   const btnModeDraw = document.getElementById('mode-draw');
   const btnModeSelect = document.getElementById('mode-select');
   const btnToolBox = document.getElementById('tool-box');
   const btnToolArrow = document.getElementById('tool-arrow');
-  const btnZoomRect = document.getElementById('btn-zoom-rect');
-  const btnFit = document.getElementById('btn-fit');
-  const btnNew = document.getElementById('btn-new');
-  const btnAuto = document.getElementById('btn-auto');
   const btnClear = document.getElementById('btn-clear');
+  const btnAddNote = document.getElementById('btn-add-note');
+  const btnAuto = document.getElementById('btn-auto');
   const btnSavePNG = document.getElementById('btn-save-png');
   const btnSaveJPG = document.getElementById('btn-save-jpg');
   const btnSaveJSON = document.getElementById('btn-save-json');
-
+  const btnZoomRect = document.getElementById('btn-zoom-rect');
+  const btnNew = document.getElementById('btn-new');
+  const btnFit = document.getElementById('btn-fit');
+  // pickers
+  const colTagBg=document.getElementById('colTagBg');
+  const colTagBgA=document.getElementById('colTagBgA');
+  const colTagText=document.getElementById('colTagText');
+  const colCritBg=document.getElementById('colCritBg');
+  const colCritBgA=document.getElementById('colCritBgA');
+  const colCritText=document.getElementById('colCritText');
+  // anchors controls
+  const btnAnchorsToggle=document.getElementById('btn-anchors-toggle');
+  const btnAnchNom=document.getElementById('btn-anch-nom');
+  const btnAnchMin=document.getElementById('btn-anch-min');
+  const btnAnchMax=document.getElementById('btn-anch-max');
+  const btnAnchClear=document.getElementById('btn-anch-clear');
   // PDF modal
   const pdfModal=document.getElementById('pdfModal');
   const pdfMeta=document.getElementById('pdfMeta');
@@ -188,497 +266,199 @@
   const pdfPreview=document.getElementById('pdfPreview');
   const pdfPrevCtx=pdfPreview.getContext('2d');
 
-  // State
-  let mode='select';
-  let drawTool='box';
-  let view={cx:0,cy:0,scale:1,baseFit:1,wCss:0,hCss:0};
-  let dpr=window.devicePixelRatio||1;
-  let img=new Image(); let imgLoaded=false;
-  let feats=[], nextId=1, selectedId=null;
-  let drawing=false, dragging=false, draggingTag=false;
-  let startPt=null, dragOffset=null, arrowDelta=null, tagOffset=null;
-  let zoomRect=false;
-  let spaceDown=false, panning=false, panStart=null, panStartCx=0, panStartCy=0;
+  // --- State
+  let mode = 'select';
+  let drawTool = 'box';
+  let view = { cx: 0, cy: 0, scale: 1, baseFit: 1, wCss: 0, hCss: 0 };
+  let dpr = window.devicePixelRatio || 1;
+  let img = new Image(); let imgLoaded = false;
+  const LEG_W=220, LEG_H=48, LEG_PAD=12; let legend = {ix:null, iy:null};
+  let legendDragKey=false, draggingLegend=false, legendOffset=null;
+  let feats = []; let nextId = 1; let selectedId=null;
+  let notes=[]; let nextNoteId=1; let draggingNote=null; let noteOffset=null;
+  let drawing=false, dragging=false, draggingTag=false; let startPt=null, dragOffset=null, arrowDelta=null, tagOffset=null;
+  let tagStyle = { bg:'#0b0f14', bgA:0.8, text:'#e6f0ff', critBg:'#4d141b', critBgA:0.85, critText:'#ffe6ea' };
+  let anchorsVisible=false; let anchorPlacing=null; let draggingAnchor=null;  // {id,type}
+  let currentPdfFile=null; let pdfOrigin='none';
 
-  // Helpers
-  const showToast=(m,ms=1400)=>{toast.textContent=m;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),ms);};
-  const btnOn=(el,on)=>{el.classList.toggle('btn-on',!!on);};
-  const setMode=(m)=>{mode=m; btnOn(btnModeDraw,m==='draw'); btnOn(btnModeSelect,m==='select'); btnOn(btnZoomRect,m==='zoomrect'); updateStatus();};
-  const setTool=(t)=>{drawTool=t; btnOn(btnToolBox,t==='box'); btnOn(btnToolArrow,t==='arrow'); setMode('draw');};
-  const updateStatus=()=>{const mm=mode==='zoomrect'?'Zoom Area':(mode[0].toUpperCase()+mode.slice(1)); statusEl.textContent=`Mode: ${mm} • Tool: ${drawTool==='box'?'Box':'Arrow'}`; stage.style.cursor=(mode==='draw'||mode==='zoomrect')?'crosshair':'default';};
+  // --- Helpers
+  function showToast(msg,ms=1600){ toast.textContent=msg; toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'),ms); }
+  function btnOn(el,on){ el.classList.toggle('btn-on', !!on); if(on){el.classList.add('btn-primary')}else{el.classList.remove('btn-primary')} }
+  function setMode(m){ mode=m; btnOn(btnModeDraw, mode==='draw'); btnOn(btnModeSelect, mode==='select'); btnOn(btnZoomRect, mode==='zoomrect'); updateStatus(); }
+  function setTool(t){ drawTool=t; btnOn(btnToolBox, t==='box'); btnOn(btnToolArrow, t==='arrow'); setMode('draw'); }
+  function updateStatus(){ const mm = mode==='zoomrect'?'Zoom Area':(mode.charAt(0).toUpperCase()+mode.slice(1)); statusEl.textContent = `Mode: ${mm} • Tool: ${drawTool==='box'?'Box':'Arrow'}`; stage.style.cursor = (mode==='draw'||mode==='zoomrect') ? 'crosshair' : 'default'; }
 
-  function fitCanvas(){
-    const r=stage.getBoundingClientRect();
-    view.wCss=r.width; view.hCss=r.height;
-    dpr=window.devicePixelRatio||1;
-    canvas.width=Math.max(1,Math.floor(r.width*dpr));
-    canvas.height=Math.max(1,Math.floor(r.height*dpr));
-    ctx.setTransform(dpr,0,0,dpr,0,0);
-    if(imgLoaded){ view.baseFit=Math.min(view.wCss/img.width, view.hCss/img.height); view.scale=(zoom.value/100)*view.baseFit; }
-    draw();
+  function fitCanvas(){ const rect = stage.getBoundingClientRect(); view.wCss=rect.width; view.hCss=rect.height; dpr=window.devicePixelRatio||1; canvas.width=Math.max(1,Math.floor(rect.width*dpr)); canvas.height=Math.max(1,Math.floor(rect.height*dpr)); ctx.setTransform(dpr,0,0,dpr,0,0); if(imgLoaded){ view.baseFit=Math.min(view.wCss/img.width, view.hCss/img.height); view.scale=(zoom.value/100)*view.baseFit; } draw(); }
+  window.addEventListener('resize', fitCanvas); new ResizeObserver(fitCanvas).observe(stage);
+
+  function imageToScreen(ix,iy){ return { x: view.wCss/2 + (ix - view.cx) * view.scale, y: view.hCss/2 + (iy - view.cy) * view.scale }; }
+  function screenToImage(sx,sy){ return { x: (sx - view.wCss/2)/view.scale + view.cx, y: (sy - view.hCss/2)/view.scale + view.cy }; }
+
+  function hexToRgba(hex,a){ const h=hex.replace('#',''); const bigint=parseInt(h,16); const short=h.length===3; const r=short?((bigint>>8)&0xF)*17:(bigint>>16)&255; const g=short?((bigint>>4)&0xF)*17:(bigint>>8)&255; const b=short?((bigint)&0xF)*17:(bigint&255); return `rgba(${r},${g},${b},${a})`; }
+  function getTagColors(f){ return f.critical ? { bg: hexToRgba(tagStyle.critBg, tagStyle.critBgA), text: tagStyle.critText } : { bg: hexToRgba(tagStyle.bg, tagStyle.bgA), text: tagStyle.text }; }
+
+  // --- Notes drawing
+  function drawNotes(){
+    notes.forEach(n=>{
+      const p=imageToScreen(n.x,n.y);
+      const w=n.w*view.scale, h=n.h*view.scale;
+      ctx.fillStyle='rgba(10,16,28,0.88)';
+      roundRect(ctx,p.x,p.y,w,h,8,true,false);
+      ctx.strokeStyle='#6cf4c5'; ctx.lineWidth=1.5; ctx.strokeRect(p.x+0.5,p.y+0.5,w-1,h-1);
+      const cx=p.x+w-18, cy=p.y+6, cs=12;
+      ctx.fillStyle='rgba(255,93,108,0.2)'; roundRect(ctx,cx,cy,cs,cs,3,true,false);
+      ctx.strokeStyle='#ff5d6c'; ctx.strokeRect(cx+0.5,cy+0.5,cs-1,cs-1);
+      ctx.beginPath(); ctx.moveTo(cx+3,cy+3); ctx.lineTo(cx+cs-3,cy+cs-3); ctx.moveTo(cx+cs-3,cy+3); ctx.lineTo(cx+3,cy+cs-3); ctx.strokeStyle='#ff5d6c'; ctx.lineWidth=1; ctx.stroke();
+      ctx.fillStyle='#e6f0ff'; ctx.font='12px ui-sans-serif,system-ui';
+      const pad=8; wrapText(ctx, n.text||'', p.x+pad, p.y+pad+14, w-2*pad, 16);
+    });
   }
-  addEventListener('resize',fitCanvas); new ResizeObserver(fitCanvas).observe(stage);
+  function wrapText(c, text, x, y, maxWidth, lineHeight){ const words=String(text||'').split(/\s+/); let line=''; for(let i=0;i<words.length;i++){ const test=line?line+' '+words[i]:words[i]; if(c.measureText(test).width>maxWidth && line){ c.fillText(line, x, y); line=words[i]; y+=lineHeight; } else { line=test; } } if(line) c.fillText(line,x,y); }
+  function resizeNoteToText(n){ const tmp=document.createElement('canvas').getContext('2d'); tmp.font='12px ui-sans-serif,system-ui'; const words=String(n.text||'').split(/\s+/); let line=''; let lines=1; const maxW=n.w-16; for(let i=0;i<words.length;i++){ const test=line?line+' '+words[i]:words[i]; if(tmp.measureText(test).width>maxW && line){ lines++; line=words[i]; } else { line=test; } } n.h=Math.max(48, 22 + lines*16 + 8); }
 
-  const imageToScreen=(ix,iy)=>({x:view.wCss/2+(ix-view.cx)*view.scale,y:view.hCss/2+(iy-view.cy)*view.scale});
-  const screenToImage=(sx,sy)=>({x:(sx-view.wCss/2)/view.scale+view.cx,y:(sy-view.hCss/2)/view.scale+view.cy});
-
-  // Draw
+  <!-- R6.2 — PART 2/3. Paste directly after PART 1, inside the same <script>(function(){ ... ) block. Do NOT add new <script> tags. -->
   function draw(){
     ctx.clearRect(0,0,view.wCss,view.hCss);
     ctx.imageSmoothingEnabled=false;
     if(!imgLoaded){ drawGrid(); renderList(); return; }
-    const p=imageToScreen(0,0);
-    ctx.drawImage(img, Math.round(p.x), Math.round(p.y), Math.round(img.width*view.scale), Math.round(img.height*view.scale));
-
+    const topLeft=imageToScreen(0,0); const dx=Math.round(topLeft.x), dy=Math.round(topLeft.y); const dw=Math.round(img.width*view.scale), dh=Math.round(img.height*view.scale);
+    ctx.drawImage(img, dx, dy, dw, dh);
     feats.forEach(f=>{
-      const color = '#32e0ff';
-      ctx.lineWidth=2; ctx.strokeStyle=color; ctx.setLineDash(f.id===selectedId?[6,4]:[]);
-      if(f.type==='box'){
-        const s=imageToScreen(f.x,f.y);
-        ctx.strokeRect(s.x, s.y, f.w*view.scale, f.h*view.scale);
-      }else{
-        const a=imageToScreen(f.x1,f.y1), b=imageToScreen(f.x2,f.y2);
-        drawArrow(ctx,a.x,a.y,b.x,b.y,color);
-      }
+      const color = f.critical ? '#ff5d6c' : '#32e0ff';
+      ctx.lineWidth=2; ctx.strokeStyle=color; ctx.setLineDash(f.id===selectedId ? [6,4] : []);
+      if(f.type==='box'){ const p=imageToScreen(f.x,f.y); ctx.strokeRect(p.x, p.y, f.w*view.scale, f.h*view.scale); }
+      else{ const a=imageToScreen(f.x1,f.y1), b=imageToScreen(f.x2,f.y2); drawArrow(ctx,a.x,a.y,b.x,b.y,color); }
       ctx.setLineDash([]);
-      // tag
-      const tag=(f.label!=null)?String(f.label):'?';
-      ctx.font='bold 14px ui-sans-serif,system-ui';
-      const tw=ctx.measureText(tag).width+16, th=22;
-      let tx=f.tx, ty=f.ty;
-      if(typeof tx!=='number'||typeof ty!=='number'){
-        if(f.type==='box'){ tx=f.x+4; ty=(f.y-th-4<0)?(f.y+4):(f.y-th-4); }
-        else{ tx=f.x2+8; ty=f.y2-th-8; }
-      }
-      const t=imageToScreen(tx,ty);
-      roundRect(ctx,t.x,t.y,tw,th,6,true,false);
-      ctx.fillStyle='#0b0f14cc'; ctx.fill();
-      ctx.fillStyle='#e6f0ff'; ctx.fillText(tag,t.x+6,t.y+th-6);
+      const tag=(f.label!=null)?String(f.label):'?'; ctx.font='bold 14px ui-sans-serif,system-ui'; const tw=ctx.measureText(tag).width+16, th=22;
+      let txi,tyi; if(typeof f.tx==='number' && typeof f.ty==='number'){ txi=f.tx; tyi=f.ty; } else if(f.type==='box'){ txi=f.x+4; tyi=(f.y - th - 4 < 0) ? (f.y+4) : (f.y - th - 4); } else { txi=f.x2+8; tyi=f.y2 - th - 8; }
+      const t=imageToScreen(txi,tyi); const colors=getTagColors(f); ctx.fillStyle=colors.bg; roundRect(ctx,t.x,t.y,tw,th,6,true,false); ctx.fillStyle=colors.text; ctx.fillText(tag,t.x+6,t.y+th-6);
     });
-
+    drawNotes();
+    if(legend.ix==null || legend.iy==null){ legend.ix = img.width-LEG_W-LEG_PAD; legend.iy=img.height-LEG_H-LEG_PAD; }
+    const l=imageToScreen(legend.ix,legend.iy); ctx.fillStyle='rgba(11,15,20,0.85)'; roundRect(ctx,l.x,l.y,LEG_W*view.scale,LEG_H*view.scale,10,true,false); ctx.font='12px ui-sans-serif,system-ui'; ctx.fillStyle='#e6f0ff'; ctx.fillText('Legend', l.x+10, l.y+16); drawLegendChip(ctx,l.x+10,l.y+20,'#ff5d6c','Critical'); drawLegendChip(ctx,l.x+110,l.y+20,'#32e0ff','Important');
+    if(anchorsVisible) drawAnchors();
     renderList();
   }
-  function drawGrid(){
-    ctx.fillStyle='#0f1522'; ctx.fillRect(0,0,view.wCss,view.hCss);
-    ctx.strokeStyle='#142038';
-    for(let x=0;x<view.wCss;x+=24){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,view.hCss);ctx.stroke();}
-    for(let y=0;y<view.hCss;y+=24){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(view.wCss,y);ctx.stroke();}
-    ctx.fillStyle='#9bb3d1'; ctx.font='14px ui-sans-serif,system-ui';
-    ctx.fillText('Drop PNG/JPG or click Import PDF',16,28);
-  }
-  function drawArrow(c,x1,y1,x2,y2,color){
-    c.strokeStyle=color; c.beginPath(); c.moveTo(x1,y1); c.lineTo(x2,y2); c.stroke();
-    const a=Math.atan2(y2-y1,x2-x1), len=10;
-    c.beginPath();
-    c.moveTo(x2,y2);
-    c.lineTo(x2 - len*Math.cos(a-Math.PI/7), y2 - len*Math.sin(a-Math.PI/7));
-    c.lineTo(x2 - len*Math.cos(a+Math.PI/7), y2 - len*Math.sin(a+Math.PI/7));
-    c.closePath(); c.fillStyle=color; c.fill();
-  }
-  function roundRect(c,x,y,w,h,r,fill,stroke){
-    if(w<2*r) r=w/2; if(h<2*r) r=h/2;
-    c.beginPath(); c.moveTo(x+r,y);
-    c.arcTo(x+w,y,x+w,y+h,r); c.arcTo(x+w,y+h,x,y+h,r);
-    c.arcTo(x,y+h,x,y,r); c.arcTo(x,y,x+w,y,r);
-    c.closePath(); if(fill) c.fill(); if(stroke) c.stroke();
-  }
+  function drawGrid(){ ctx.fillStyle='#0f1522'; ctx.fillRect(0,0,view.wCss,view.hCss); ctx.strokeStyle='#142038'; for(let x=0;x<view.wCss;x+=24){ ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,view.hCss); ctx.stroke(); } for(let y=0;y<view.hCss;y+=24){ ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(view.wCss,y); ctx.stroke(); } ctx.fillStyle='#9bb3d1'; ctx.font='14px ui-sans-serif,system-ui'; ctx.fillText('Drop an image (PNG/JPG) here to begin', 16, 28); }
+  function drawArrow(c,x1,y1,x2,y2,color){ c.strokeStyle=color; c.beginPath(); c.moveTo(x1,y1); c.lineTo(x2,y2); c.stroke(); const angle=Math.atan2(y2-y1,x2-x1), len=10; c.beginPath(); c.moveTo(x2,y2); c.lineTo(x2 - len*Math.cos(angle-Math.PI/7), y2 - len*Math.sin(angle-Math.PI/7)); c.lineTo(x2 - len*Math.cos(angle+Math.PI/7), y2 - len*Math.sin(angle+Math.PI/7)); c.closePath(); c.fillStyle=color; c.fill(); }
+  function roundRect(ctx,x,y,w,h,r,fill,stroke){ if(w<2*r) r=w/2; if(h<2*r) r=h/2; ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y, x+w,y+h, r); ctx.arcTo(x+w,y+h, x,y+h,r); ctx.arcTo(x,y+h, x,y, r); ctx.arcTo(x,y, x+w,y, r); ctx.closePath(); if(fill) ctx.fill(); if(stroke) ctx.stroke(); }
+  function drawLegendChip(c,x,y,color,label){ c.fillStyle=color; c.beginPath(); c.arc(x,y+5,5,0,Math.PI*2); c.fill(); c.fillStyle='#9bb3d1'; c.fillText(label, x+12, y+9); }
 
-  // List
-  function renderList(){
-    featCount.textContent=`(${feats.length})`;
-    list.innerHTML='';
-    feats.forEach(f=>{
-      const div=document.createElement('div'); div.className='item';
-      const meta=document.createElement('div');
-      const id=document.createElement('div'); id.className='id'; id.textContent=(f.label??'—')+(f.type==='arrow'?' • ➤':''); meta.appendChild(id);
-      const xy=document.createElement('div'); xy.className='xy';
-      xy.textContent=(f.type==='box')?`box x:${f.x|0}, y:${f.y|0}, w:${f.w|0}, h:${f.h|0}`
-                                   :`arrow tail(${f.x1|0},${f.y1|0}) → head(${f.x2|0},${f.y2|0})`;
-      meta.appendChild(xy);
-      const actions=document.createElement('div'); actions.className='actions';
-      const b1=document.createElement('button'); b1.textContent='Select'; b1.onclick=()=>{selectedId=f.id; setMode('select'); draw();};
-      const b2=document.createElement('button'); b2.textContent='Delete'; b2.onclick=()=>{feats=feats.filter(x=>x.id!==f.id); if(selectedId===f.id)selectedId=null; draw();};
-      actions.appendChild(b1); actions.appendChild(b2);
-      div.appendChild(meta); div.appendChild(actions);
-      list.appendChild(div);
-    });
-  }
+  function tagRectOnScreen(f){ const tag=(f.label!=null)?String(f.label):'?'; ctx.font='bold 14px ui-sans-serif,system-ui'; const tw=ctx.measureText(tag).width+16, th=22; let txi,tyi; if(typeof f.tx==='number' && typeof f.ty==='number'){ txi=f.tx; tyi=f.ty; } else if(f.type==='box'){ txi=f.x+4; tyi=(f.y - th - 4 < 0) ? (f.y+4) : (f.y - th - 4); } else { txi=f.x2+8; tyi=f.y2 - th - 8; } const p=imageToScreen(txi,tyi); return {sx:p.x, sy:p.y, tw, th, txi, tyi}; }
+  function nearLine(px,py,x1,y1,x2,y2,thr){ const A=px-x1,B=py-y1,C=x2-x1,D=y2-y1; const dot=A*C+B*D, len=C*C+D*D; let t=len!==0?dot/len:-1; t=Math.max(0,Math.min(1,t)); const lx=x1+t*C, ly=y1+t*D; const dx=px-lx, dy=py-ly; return (dx*dx+dy*dy)<=thr*thr; }
+  function legendRectOnScreen(){ const p=imageToScreen(legend.ix,legend.iy); return {sx:p.x, sy:p.y, sw:LEG_W*view.scale, sh:LEG_H*view.scale}; }
 
-  // Hit helpers
-  function tagRectOnScreen(f){
-    const tag=(f.label!=null)?String(f.label):'?';
-    ctx.font='bold 14px ui-sans-serif,system-ui';
-    const tw=ctx.measureText(tag).width+16, th=22;
-    let tx=f.tx, ty=f.ty;
-    if(typeof tx!=='number'||typeof ty!=='number'){
-      if(f.type==='box'){ tx=f.x+4; ty=(f.y-th-4<0)?(f.y+4):(f.y-th-4); }
-      else{ tx=f.x2+8; ty=f.y2-th-8; }
-    }
-    const p=imageToScreen(tx,ty);
-    return {sx:p.x, sy:p.y, tw, th, txi:tx, tyi:ty};
-  }
-  function nearLine(px,py,x1,y1,x2,y2,thr){
-    const A=px-x1,B=py-y1,C=x2-x1,D=y2-y1; const dot=A*C+B*D, len=C*C+D*D;
-    let t=len!==0?dot/len:-1; t=Math.max(0,Math.min(1,t));
-    const lx=x1+t*C, ly=y1+t*D; const dx=px-lx, dy=py-ly;
-    return (dx*dx+dy*dy)<=thr*thr;
-  }
-  function findHit(px,py){
-    // tag first
-    for(let i=feats.length-1;i>=0;i--){ const f=feats[i]; const r=tagRectOnScreen(f); if(px>=r.sx&&px<=r.sx+r.tw&&py>=r.sy&&py<=r.sy+r.th) return {id:f.id,hitTag:true}; }
-    // shape
-    for(let i=feats.length-1;i>=0;i--){ const f=feats[i];
-      if(f.type==='box'){ const p=imageToScreen(f.x,f.y); if(px>=p.x&&px<=p.x+f.w*view.scale&&py>=p.y&&py<=p.y+f.h*view.scale) return {id:f.id,hitTag:false}; }
-      else{ const a=imageToScreen(f.x1,f.y1), b=imageToScreen(f.x2,f.y2); if(nearLine(px,py,a.x,a.y,b.x,b.y,6)) return {id:f.id,hitTag:false}; }
-    }
-    return null;
-  }
+  function renderList(){ featCount.textContent = `(${feats.length})`; list.innerHTML=''; feats.forEach(f=>{ const div=document.createElement('div'); div.className='item'; const left=document.createElement('div'); const id=document.createElement('div'); id.className='id'; id.textContent=(f.label??'—') + (f.type==='arrow'?' • ➤':''); left.appendChild(id); const xy=document.createElement('div'); xy.className='xy'; xy.textContent = (f.type==='box') ? `box x:${f.x|0}, y:${f.y|0}, w:${f.w|0}, h:${f.h|0}` : `arrow tail(${f.x1|0},${f.y1|0}) → head(${f.x2|0},${f.y2|0})`; left.appendChild(xy); const actions=document.createElement('div'); actions.className='actions'; const critWrap=document.createElement('label'); critWrap.className='crit'; const chk=document.createElement('input'); chk.type='checkbox'; chk.checked=!!f.critical; chk.onchange=()=>{ f.critical=chk.checked; draw(); }; const span=document.createElement('span'); span.textContent='Critical'; critWrap.appendChild(chk); critWrap.appendChild(span); const btnSel=document.createElement('button'); btnSel.textContent='Select'; btnSel.onclick=()=>{ selectedId=f.id; setMode('select'); draw(); }; const btnDel=document.createElement('button'); btnDel.textContent='Delete'; btnDel.onclick=()=>{ feats=feats.filter(x=>x.id!==f.id); if(selectedId===f.id) selectedId=null; draw(); }; actions.appendChild(critWrap); actions.appendChild(btnSel); actions.appendChild(btnDel); div.appendChild(left); div.appendChild(actions); list.appendChild(div); }); }
 
-  // Interaction
-  btnModeDraw.addEventListener('click',()=>setMode(mode==='draw'?'select':'draw'));
-  btnModeSelect.addEventListener('click',()=>setMode('select'));
-  btnToolBox.addEventListener('click',()=>setTool('box'));
-  btnToolArrow.addEventListener('click',()=>setTool('arrow'));
-  btnZoomRect.addEventListener('click',()=>setMode(mode==='zoomrect'?'select':'zoomrect'));
-  btnFit.addEventListener('click',()=>{ if(!imgLoaded){showToast('Load an image first');return;} zoom.value=100; zoom.dispatchEvent(new Event('input')); });
-  btnNew.addEventListener('click',()=>{ feats=[]; nextId=1; selectedId=null; imgLoaded=false; img=new Image(); draw(); showToast('New — load an image'); });
-  btnAuto.addEventListener('click',()=>{ let n=1; feats.forEach(f=>f.label=n++); draw(); showToast('Auto-numbered'); });
-  btnClear.addEventListener('click',()=>{ feats=[]; selectedId=null; draw(); showToast('Cleared'); });
+  function clientToCanvas(e){ const rect = canvas.getBoundingClientRect(); return { x: e.clientX - rect.left, y: e.clientY - rect.top }; }
 
-  // Mouse + keys
-  addEventListener('keydown',e=>{ if(e.key==='r'||e.key==='R') setMode(mode==='draw'?'select':'draw'); if(e.key==='s'||e.key==='S') setMode('select'); if(e.key==='f'||e.key==='F') btnFit.click(); if(e.code==='Space'){spaceDown=true;} });
-  addEventListener('keyup',e=>{ if(e.code==='Space'){spaceDown=false;panning=false;} });
+  function drawAnchors(){ feats.forEach(f=>{ if(!f.anchors) return; const map=[['nom','#6cf4c5'],['min','#ffd166'],['max','#ff99ff']]; map.forEach(([k,col])=>{ const pt=f.anchors[k]; if(!pt) return; const p=imageToScreen(pt.x,pt.y); const r=6; ctx.lineWidth=2; ctx.strokeStyle=col; ctx.beginPath(); ctx.arc(p.x,p.y,r,0,Math.PI*2); ctx.stroke(); ctx.beginPath(); ctx.moveTo(p.x-r,p.y); ctx.lineTo(p.x+r,p.y); ctx.moveTo(p.x,p.y-r); ctx.lineTo(p.x,p.y+r); ctx.stroke(); }); }); }
+  function findAnchorHit(px,py){ if(!anchorsVisible) return null; const thr=8; for(let i=feats.length-1;i>=0;i--){ const f=feats[i]; if(!f.anchors) continue; for(const type of ['nom','min','max']){ const pt=f.anchors[type]; if(!pt) continue; const p=imageToScreen(pt.x,pt.y); const dx=px-p.x, dy=py-p.y; if(dx*dx+dy*dy<=thr*thr) return {id:f.id, type}; } } return null; }
+  function findNoteHit(px,py){ for(let i=notes.length-1;i>=0;i--){ const n=notes[i]; const p=imageToScreen(n.x,n.y); const w=n.w*view.scale, h=n.h*view.scale; if(px>=p.x&&px<=p.x+w&&py>=p.y&&py<=p.y+h){ const cx=p.x+w-18, cy=p.y+6, cs=12; const hitClose=(px>=cx&&px<=cx+cs&&py>=cy&&py<=cy+cs); return {id:n.id, hitClose}; } } return null; }
+  
+  // === Interaction ===
+  btnModeDraw.addEventListener('click', ()=> setMode(mode==='draw'?'select':'draw'));
+  btnModeSelect.addEventListener('click', ()=> setMode('select'));
+  btnToolBox.addEventListener('click', ()=> setTool('box'));
+  btnToolArrow.addEventListener('click', ()=> setTool('arrow'));
+  btnZoomRect.addEventListener('click', ()=> setMode(mode==='zoomrect'?'select':'zoomrect'));
+  btnNew.addEventListener('click', ()=>{ feats=[]; notes=[]; nextId=1; selectedId=null; imgLoaded=false; img=new Image(); legend={ix:null,iy:null}; draw(); showToast('New started — load an image'); });
+  function doFit(){ if(!imgLoaded){ showToast('Load an image first'); return; } zoom.value=100; zoom.dispatchEvent(new Event('input')); }
+  btnFit.addEventListener('click', doFit);
+  window.addEventListener('keydown', (e)=>{ if(e.key==='r'||e.key==='R') setMode(mode==='draw'?'select':'draw'); if(e.key==='s'||e.key==='S') setMode('select'); if(e.key==='f'||e.key==='F') doFit(); if(e.key==='d'||e.key==='D') legendDragKey=true; if((e.key==='Delete'||e.key==='Backspace') && selectedId!=null){ feats=feats.filter(f=>f.id!==selectedId); selectedId=null; draw(); } });
+  window.addEventListener('keyup', (e)=>{ if(e.key==='d'||e.key==='D'){ legendDragKey=false; draggingLegend=false; } });
 
-  stage.addEventListener('wheel', e=>{
-    if(!imgLoaded) return;
-    e.preventDefault();
-    const oldScale=view.scale;
-    const delta=e.deltaY>0?-1:1;
-    const cur=(parseInt(zoom.value,10)||100) + delta*8;
-    const newPercent=Math.max(25,Math.min(400,cur));
-    zoom.value=newPercent; zoomVal.textContent=newPercent+'%';
-    view.scale=(newPercent/100)*view.baseFit;
-
-    // zoom towards mouse position
-    const rect=canvas.getBoundingClientRect();
-    const mx=e.clientX-rect.left, my=e.clientY-rect.top;
-    const before=screenToImage(mx,my);
-    const after=screenToImage(mx,my);
-    view.cx += (before.x-after.x);
-    view.cy += (before.y-after.y);
-    draw();
-  }, {passive:false});
-
-  stage.addEventListener('mousedown', e=>{
-    const p=clientToCanvas(e);
-    if(!imgLoaded) return;
-
-    if(e.button===1 || spaceDown){ // pan
-      panning=true; panStart=p; panStartCx=view.cx; panStartCy=view.cy; return;
-    }
-
+  stage.addEventListener('mousedown', (e)=>{
+    const p=clientToCanvas(e); if(!imgLoaded) return;
+    if(anchorsVisible){ if(anchorPlacing && selectedId!=null){ const ip=screenToImage(p.x,p.y); const f=feats.find(x=>x.id===selectedId); if(f){ f.anchors=f.anchors||{nom:null,min:null,max:null}; f.anchors[anchorPlacing]={x:ip.x,y:ip.y}; draw(); showToast(`Set ${anchorPlacing} anchor`); } anchorPlacing=null; return; } const hitA=findAnchorHit(p.x,p.y); if(hitA){ draggingAnchor=hitA; return; } }
+    const hitNote=findNoteHit(p.x,p.y); if(hitNote){ if(hitNote.hitClose){ notes=notes.filter(n=>n.id!==hitNote.id); draw(); } else { const n=notes.find(n=>n.id===hitNote.id); const ip=screenToImage(p.x,p.y); noteOffset={dx: ip.x - n.x, dy: ip.y - n.y}; draggingNote=hitNote.id; } return; }
+    const hit=findHit(p.x,p.y); if(legendDragKey && hit && hit.legend){ const ip=screenToImage(p.x,p.y); legendOffset={dx:ip.x-legend.ix, dy:ip.y-legend.iy}; draggingLegend=true; return; }
     if(mode==='zoomrect'){ drawing=true; startPt=p; return; }
-
     if(mode==='draw'){ drawing=true; startPt=screenToImage(p.x,p.y); return; }
-
-    const hit=findHit(p.x,p.y);
-    if(hit){
-      selectedId=hit.id;
-      const f=feats.find(x=>x.id===selectedId);
-      if(hit.hitTag){
-        const tr=tagRectOnScreen(f); draggingTag=true;
-        const ip=screenToImage(p.x,p.y);
-        const halfW=(tr.tw/view.scale)/2, halfH=(tr.th/view.scale)/2;
-        tagOffset={dx: ip.x - (tr.txi + halfW), dy: ip.y - (tr.tyi + halfH)};
-      }else{
-        const ip=screenToImage(p.x,p.y);
-        if(f.type==='box'){ dragOffset={dx:f.w/2, dy:f.h/2}; }
-        else{ arrowDelta={lenx:f.x2-f.x1, leny:f.y2-f.y1}; }
-        dragging=true;
-      }
-    }else{
-      selectedId=null; draw();
-    }
+    if(hit && !hit.legend){ selectedId=hit.id; const f=feats.find(x=>x.id===selectedId); if(hit.hitTag){ const tr=tagRectOnScreen(f); draggingTag=true; const ip=screenToImage(p.x,p.y); const halfW=(tr.tw/view.scale)/2, halfH=(tr.th/view.scale)/2; tagOffset={dx: ip.x - (tr.txi + halfW), dy: ip.y - (tr.tyi + halfH)}; }else{ const ip=screenToImage(p.x,p.y); if(f.type==='box'){ dragOffset={dx:f.w/2, dy:f.h/2}; } else{ arrowDelta={lenx:f.x2-f.x1, leny:f.y2-f.y1}; } dragging=true; } } else { selectedId=null; draw(); }
   });
+  stage.addEventListener('mousemove', (e)=>{ if(!imgLoaded) return; const p=clientToCanvas(e); if(draggingLegend){ const ip=screenToImage(p.x,p.y); let nx=ip.x-legendOffset.dx, ny=ip.y-legendOffset.dy; nx=Math.max(0,Math.min(img.width-LEG_W,nx)); ny=Math.max(0,Math.min(img.height-LEG_H,ny)); legend.ix=nx; legend.iy=ny; draw(); return; } if(draggingNote){ const ip=screenToImage(p.x,p.y); const n=notes.find(n=>n.id===draggingNote); if(n){ n.x=ip.x - noteOffset.dx; n.y=ip.y - noteOffset.dy; draw(); } return; } if(draggingAnchor){ const ip=screenToImage(p.x,p.y); const f=feats.find(x=>x.id===draggingAnchor.id); if(f&&f.anchors&&f.anchors[draggingAnchor.type]){ f.anchors[draggingAnchor.type]={x:ip.x,y:ip.y}; draw(); } return; } if(mode==='zoomrect' && drawing && startPt){ draw(); const x=Math.min(startPt.x,p.x), y=Math.min(startPt.y,p.y); const w=Math.abs(p.x-startPt.x), h=Math.abs(p.y-startPt.y); ctx.setLineDash([6,4]); ctx.strokeStyle='#6cf4c5'; ctx.lineWidth=2; ctx.strokeRect(x,y,w,h); ctx.setLineDash([]); return; } if(mode==='draw' && drawing && startPt){ const cur=screenToImage(p.x,p.y); draw(); if(drawTool==='box'){ const x=Math.min(startPt.x,cur.x), y=Math.min(startPt.y,cur.y); const w=Math.abs(cur.x-startPt.x), h=Math.abs(cur.y-startPt.y); const s=imageToScreen(x,y); ctx.setLineDash([6,4]); ctx.strokeStyle='#6cf4c5'; ctx.lineWidth=2; ctx.strokeRect(s.x,s.y,w*view.scale,h*view.scale); ctx.setLineDash([]); } else { const head=imageToScreen(startPt.x,startPt.y); const tail=imageToScreen(cur.x,cur.y); drawArrow(ctx, tail.x, tail.y, head.x, head.y, '#6cf4c5'); } return; } if(mode==='select' && dragging && selectedId!=null){ const ip=screenToImage(p.x,p.y); const f=feats.find(x=>x.id===selectedId); if(f.type==='box'){ f.x=ip.x - dragOffset.dx; f.y=ip.y - dragOffset.dy; } else { f.x2=ip.x; f.y2=ip.y; f.x1=f.x2 - arrowDelta.lenx; f.y1=f.y2 - arrowDelta.leny; } draw(); return; } if(mode==='select' && draggingTag && selectedId!=null){ const ip=screenToImage(p.x,p.y); const f=feats.find(x=>x.id===selectedId); let nx=ip.x - tagOffset.dx, ny=ip.y - tagOffset.dy; nx=Math.max(0,Math.min(img.width-10,nx)); ny=Math.max(0,Math.min(img.height-10,ny)); f.tx=nx; f.ty=ny; draw(); return; } });
+  window.addEventListener('mouseup', (e)=>{ if(!imgLoaded) return; const p=clientToCanvas(e); if(mode==='zoomrect' && drawing && startPt){ const rect={x:Math.min(startPt.x,p.x), y:Math.min(startPt.y,p.y), w:Math.abs(p.x-startPt.x), h:Math.abs(p.y-startPt.y)}; drawing=false; startPt=null; if(rect.w<10||rect.h<10){ draw(); return; } const a=screenToImage(rect.x,rect.y); const b=screenToImage(rect.x+rect.w,rect.y+rect.h); const iw=Math.abs(b.x-a.x), ih=Math.abs(b.y-a.y); const newScale=Math.min(view.wCss/iw, view.hCss/ih); view.cx=(a.x+b.x)/2; view.cy=(a.y+b.y)/2; view.scale=newScale; zoom.value=Math.max(25,Math.min(400,Math.round((view.scale/view.baseFit)*100))); zoomVal.textContent=zoom.value+'%'; draw(); return; } if(mode==='draw' && drawing){ const cur=screenToImage(p.x,p.y); drawing=false; if(!startPt){ draw(); return; } if(drawTool==='box'){ const x=Math.min(startPt.x,cur.x), y=Math.min(startPt.y,cur.y); const w=Math.abs(cur.x-startPt.x), h=Math.abs(cur.y-startPt.y); startPt=null; if(w<3||h<3){ draw(); return; } const f={type:'box', id:nextId++, x,y,w,h, label:null, tx:undefined, ty:undefined, critical:false, anchors:{nom:null,min:null,max:null}}; feats.push(f); selectedId=f.id; draw(); return; } else { const f={type:'arrow', id:nextId++, x1:cur.x, y1:cur.y, x2:startPt.x, y2:startPt.y, label:null, tx:undefined, ty:undefined, critical:false, anchors:{nom:null,min:null,max:null}}; startPt=null; feats.push(f); selectedId=f.id; draw(); return; } } if(mode==='select' && (dragging||draggingTag)){ dragging=false; draggingTag=false; } if(draggingLegend){ draggingLegend=false; } if(draggingAnchor){ draggingAnchor=null; } if(draggingNote){ draggingNote=null; } });
 
-  stage.addEventListener('mousemove', e=>{
-    if(!imgLoaded) return; const p=clientToCanvas(e);
+  function findHit(px,py){ for(let i=feats.length-1;i>=0;i--){ const f=feats[i]; const r=tagRectOnScreen(f); if(px>=r.sx&&px<=r.sx+r.tw&&py>=r.sy&&py<=r.sy+r.th) return {id:f.id,hitTag:true}; } for(let i=feats.length-1;i>=0;i--){ const f=feats[i]; if(f.type==='box'){ const p=imageToScreen(f.x,f.y); if(px>=p.x&&px<=p.x+f.w*view.scale&&py>=p.y&&py<=p.y+f.h*view.scale) return {id:f.id,hitTag:false}; } else { const a=imageToScreen(f.x1,f.y1), b=imageToScreen(f.x2,f.y2); if(nearLine(px,py,a.x,a.y,b.x,b.y,6)) return {id:f.id,hitTag:false}; } } const lr=legendRectOnScreen(); if(px>=lr.sx&&px<=lr.sx+lr.sw&&py>=lr.sy&&py<=lr.sy+lr.sh) return {legend:true}; return null; }
 
-    if(panning){ const dx=(p.x-panStart.x)/view.scale, dy=(p.y-panStart.y)/view.scale; view.cx=panStartCx-dx; view.cy=panStartCy-dy; draw(); return; }
-
-    if(mode==='zoomrect' && drawing && startPt){ draw(); const x=Math.min(startPt.x,p.x), y=Math.min(startPt.y,p.y); const w=Math.abs(p.x-startPt.x), h=Math.abs(p.y-startPt.y); ctx.setLineDash([6,4]); ctx.strokeStyle='#6cf4c5'; ctx.lineWidth=2; ctx.strokeRect(x,y,w,h); ctx.setLineDash([]); return; }
-
-    if(mode==='draw' && drawing && startPt){
-      const cur=screenToImage(p.x,p.y); draw();
-      if(drawTool==='box'){
-        const x=Math.min(startPt.x,cur.x), y=Math.min(startPt.y,cur.y);
-        const w=Math.abs(cur.x-startPt.x), h=Math.abs(cur.y-startPt.y);
-        const s=imageToScreen(x,y); ctx.setLineDash([6,4]); ctx.strokeStyle='#6cf4c5'; ctx.lineWidth=2; ctx.strokeRect(s.x,s.y,w*view.scale,h*view.scale); ctx.setLineDash([]); 
-      }else{
-        const head=imageToScreen(startPt.x,startPt.y);
-        const tail=imageToScreen(cur.x,cur.y);
-        drawArrow(ctx, tail.x, tail.y, head.x, head.y, '#6cf4c5');
-      }
-      return;
-    }
-
-    if(mode==='select' && dragging && selectedId!=null){
-      const ip=screenToImage(p.x,p.y); const f=feats.find(x=>x.id===selectedId);
-      if(f.type==='box'){ f.x=ip.x - dragOffset.dx; f.y=ip.y - dragOffset.dy; }
-      else{ f.x2=ip.x; f.y2=ip.y; f.x1=f.x2 - arrowDelta.lenx; f.y1=f.y2 - arrowDelta.leny; }
-      draw(); return;
-    }
-
-    if(mode==='select' && draggingTag && selectedId!=null){
-      const ip=screenToImage(p.x,p.y); const f=feats.find(x=>x.id===selectedId);
-      f.tx=ip.x - tagOffset.dx; f.ty=ip.y - tagOffset.dy; draw(); return;
-    }
-  });
-
-  addEventListener('mouseup', ()=>{
-    if(mode==='zoomrect' && drawing && startPt){
-      const r={x:Math.min(startPt.x,lastMouse.x),y:Math.min(startPt.y,lastMouse.y),w:Math.abs(lastMouse.x-startPt.x),h:Math.abs(lastMouse.y-startPt.y)};
-      drawing=false; startPt=null;
-      if(r.w<10||r.h<10){ draw(); return; }
-      const a=screenToImage(r.x,r.y), b=screenToImage(r.x+r.w,r.y+r.h);
-      const iw=Math.abs(b.x-a.x), ih=Math.abs(b.y-a.y);
-      const newScale=Math.min(view.wCss/iw, view.hCss/ih);
-      view.cx=(a.x+b.x)/2; view.cy=(a.y+b.y)/2; view.scale=newScale;
-      zoom.value=Math.max(25,Math.min(400,Math.round((view.scale/view.baseFit)*100)));
-      zoomVal.textContent=zoom.value+'%'; draw(); return;
-    }
-    drawing=false; dragging=false; draggingTag=false; panning=false;
-  });
-
-  let lastMouse={x:0,y:0};
-  stage.addEventListener('mousemove', e=>{ const r=canvas.getBoundingClientRect(); lastMouse.x=e.clientX-r.left; lastMouse.y=e.clientY-r.top; });
-
-  function clientToCanvas(e){ const r=canvas.getBoundingClientRect(); return {x:e.clientX-r.left,y:e.clientY-r.top}; }
-
-  // Drag & drop + file inputs
-  ['dragenter','dragover','dragleave','drop'].forEach(ev=> stage.addEventListener(ev,e=>{e.preventDefault();e.stopPropagation();}));
-  stage.addEventListener('drop', async e=>{ const dt=e.dataTransfer; if(!dt||!dt.files||!dt.files.length) return; const f=dt.files[0]; if(f.type==='application/pdf'){ await openPdfModal(f); } else { loadFile(f); } });
+  // drag & drop
+  ;['dragenter','dragover','dragleave','drop'].forEach(ev=> stage.addEventListener(ev,(e)=>{e.preventDefault(); e.stopPropagation();}));
+  stage.addEventListener('drop', async (e)=>{ const dt=e.dataTransfer; if(!dt||!dt.files||!dt.files.length) return; const f=dt.files[0]; if(f.type==='application/pdf'){ await openPdfModal(f); } else { loadFile(f); } });
   fileInput.addEventListener('change',()=>{ const f=fileInput.files[0]; if(!f) return; loadFile(f); fileInput.value=''; });
   pdfInput.addEventListener('change', async ()=>{ const f=pdfInput.files[0]; if(!f) return; await openPdfModal(f); pdfInput.value=''; });
 
-  // Zoom slider
+  // zoom slider
   zoom.addEventListener('input', ()=>{ if(!imgLoaded){ zoomVal.textContent=zoom.value+'%'; return; } view.scale=(zoom.value/100)*view.baseFit; zoomVal.textContent=zoom.value+'%'; draw(); });
 
-  // Export
+  async function ensurePdfJs(){ if(window.pdfjsLib){ pdfOrigin='cdn'; pdfStatus.textContent='pdf.js: CDN'; return true; } try{ await loadScript('./vendor/pdfjs/pdf.min.js', 2500); if(window.pdfjsLib){ pdfjsLib.GlobalWorkerOptions.workerSrc='./vendor/pdfjs/pdf.worker.min.js'; pdfOrigin='local'; pdfStatus.textContent='pdf.js: local'; return true; } }catch{} pdfOrigin='missing'; pdfStatus.textContent='pdf.js: not found'; return false; }
+  function loadScript(src, timeoutMs=3000){ return new Promise((res,rej)=>{ const s=document.createElement('script'); s.src=src; s.onload=()=>res(); s.onerror=()=>rej(new Error('load failed')); document.head.appendChild(s); setTimeout(()=>rej(new Error('timeout')), timeoutMs); }); }
+
+  async function openPdfModal(file){ const ok=await ensurePdfJs(); if(!ok){ showToast('pdf.js unavailable. Add vendor/pdfjs files for offline use.'); return; } currentPdfFile=file; pdfModal.classList.add('show'); pdfMeta.textContent = ` ${file.name}`; const ab=await file.arrayBuffer(); const loadingTask=pdfjsLib.getDocument({data:ab}); const pdf=await loadingTask.promise; pdfPageNum.max=String(pdf.numPages); pdfPageSlider.max=String(pdf.numPages); pdfPageNum.value='1'; pdfPageSlider.value='1'; const renderPreview=async()=>{ const pageNo=parseInt(pdfPageNum.value,10)||1; const dpi=parseInt(pdfDpi.value,10)||300; pdfDpiVal.textContent=dpi+' dpi'; const page=await pdf.getPage(pageNo); const scale=dpi/72; const viewport=page.getViewport({scale}); const cw=Math.round(viewport.width), ch=Math.round(viewport.height); pdfPreview.width=cw; pdfPreview.height=ch; pdfPrevCtx.imageSmoothingEnabled=false; await page.render({canvasContext:pdfPrevCtx, viewport}).promise; };
+    pdfPageNum.oninput=()=>{ pdfPageSlider.value=pdfPageNum.value; renderPreview(); };
+    pdfPageSlider.oninput=()=>{ pdfPageNum.value=pdfPageSlider.value; renderPreview(); };
+    pdfDpi.oninput=()=>{ pdfDpiVal.textContent=pdfDpi.value+' dpi'; renderPreview(); };
+    pdfCancel.onclick=pdfClose.onclick=()=>{ pdfModal.classList.remove('show'); };
+    pdfImport.onclick=async ()=>{ const pageNo=parseInt(pdfPageNum.value,10)||1; const dpi=parseInt(pdfDpi.value,10)||300; const page=await pdf.getPage(pageNo); const scale=dpi/72; const viewport=page.getViewport({scale}); const out=document.createElement('canvas'); out.width=Math.round(viewport.width); out.height=Math.round(viewport.height); const octx=out.getContext('2d'); octx.imageSmoothingEnabled=false; await page.render({canvasContext:octx, viewport}).promise; const dataURL=out.toDataURL('image/png'); const tmpImg=new Image(); tmpImg.onload=()=>{ img=tmpImg; imgLoaded=true; feats=[]; notes=[]; nextId=1; selectedId=null; legend.ix=img.width-LEG_W-LEG_PAD; legend.iy=img.height-LEG_H-LEG_PAD; view.cx=img.width/2; view.cy=img.height/2; fitCanvas(); requestAnimationFrame(fitCanvas); showToast(`Imported page ${pageNo} @ ${dpi} dpi (${pdfOrigin})`); pdfModal.classList.remove('show'); }; tmpImg.src=dataURL; };
+    await renderPreview();
+  }
+
+  function loadFile(f){ const name=f.name.toLowerCase(); if(name.endsWith('.json')){ const reader=new FileReader(); reader.onload=()=>{ try{ const data=JSON.parse(reader.result); if(data && data.meta==='ppap-feature-json'){ feats=(data.feats||[]); nextId=(Math.max(0,...feats.map(x=>x.id||0))+1)||1; if(data.legend){ legend.ix=data.legend.ix; legend.iy=data.legend.iy; } if(data.tagStyle){ Object.assign(tagStyle, data.tagStyle); syncTagPickers(); } notes = Array.isArray(data.notes)? data.notes : []; showToast('Annotations loaded'); draw(); } else showToast('Not a PPAP Feature JSON'); }catch{ showToast('Invalid JSON'); } }; reader.readAsText(f); return; } if(!name.endsWith('.png')&&!name.endsWith('.jpg')&&!name.endsWith('.jpeg')){ showToast('Use PNG or JPG.'); return; } const url=URL.createObjectURL(f); img=new Image(); img.onload=()=>{ URL.revokeObjectURL(url); imgLoaded=true; feats=[]; notes=[]; nextId=1; selectedId=null; legend.ix=img.width-LEG_W-LEG_PAD; legend.iy=img.height-LEG_H-LEG_PAD; view.cx=img.width/2; view.cy=img.height/2; fitCanvas(); requestAnimationFrame(fitCanvas); showToast('Image loaded'); }; img.onerror=()=>{ URL.revokeObjectURL(url); showToast('Image failed to load'); }; img.src=url; }
+
+  btnAuto.addEventListener('click',()=>{ let n=1; feats.forEach(f=>f.label=n++); draw(); showToast('Features auto-numbered'); });
+  btnClear.addEventListener('click',()=>{ feats=[]; selectedId=null; draw(); showToast('Cleared features'); });
+
   function download(name, dataURL){ const a=document.createElement('a'); a.href=dataURL; a.download=name; document.body.appendChild(a); a.click(); a.remove(); }
-  function exportImage(type){
-    if(!imgLoaded){ showToast('Load an image first'); return; }
-    const out=document.createElement('canvas');
-    out.width=img.width; out.height=img.height;
-    const o=out.getContext('2d'); o.imageSmoothingEnabled=false;
-    o.drawImage(img,0,0);
-    // draw overlay at 1:1 image space
-    feats.forEach(f=>{
-      o.lineWidth=2; o.strokeStyle='#32e0ff';
-      if(f.type==='box'){ o.strokeRect(f.x,f.y,f.w,f.h); }
-      else{ drawArrow(o,f.x1,f.y1,f.x2,f.y2,'#32e0ff'); }
-      // tag
-      const tag=(f.label!=null)?String(f.label):'?';
-      o.font='bold 14px ui-sans-serif,system-ui';
-      const tw=o.measureText(tag).width+16, th=22;
-      let tx=f.tx, ty=f.ty;
-      if(typeof tx!=='number'||typeof ty!=='number'){
-        if(f.type==='box'){ tx=f.x+4; ty=(f.y-th-4<0)?(f.y+4):(f.y-th-4); }
-        else{ tx=f.x2+8; ty=f.y2-th-8; }
-      }
-      roundRect(o,tx,ty,tw,th,6,true,false);
-      o.fillStyle='rgba(11,15,20,0.85)'; o.fill();
-      o.fillStyle='#e6f0ff'; o.fillText(tag,tx+6,ty+th-6);
-    });
-    const mime = type==='jpg' ? 'image/jpeg' : 'image/png';
-    const dataURL = out.toDataURL(mime, type==='jpg'?0.92:undefined);
-    download('feature.'+(type==='jpg'?'jpg':'png'), dataURL);
-  }
-  btnSavePNG.addEventListener('click',()=>exportImage('png'));
-  btnSaveJPG.addEventListener('click',()=>exportImage('jpg'));
-  btnSaveJSON.addEventListener('click',()=>{
-    const data={meta:'ppap-feature-json',feats,version:'r6-reset'};
-    const blob=new Blob([JSON.stringify(data)],{type:'application/json'});
-    const url=URL.createObjectURL(blob); download('feature.json',url); URL.revokeObjectURL(url);
+  function exportImage(type){ if(!imgLoaded){ showToast('Load an image first'); return; } const out=document.createElement('canvas'); out.width=img.width; out.height=img.height; const o=out.getContext('2d'); o.imageSmoothingEnabled=false; o.drawImage(img,0,0); feats.forEach(f=>{ const color = f.critical ? '#ff5d6c' : '#32e0ff'; o.lineWidth=2; o.strokeStyle=color; if(f.type==='box'){ o.strokeRect(f.x, f.y, f.w, f.h); } else { drawArrow(o,f.x1,f.y1,f.x2,f.y2,color); } const tag=(f.label!=null)?String(f.label):'?'; o.font='bold 14px ui-sans-serif,system-ui'; const tw=o.measureText(tag).width+16, th=22; let txi,tyi; if(typeof f.tx==='number' && typeof f.ty==='number'){ txi=f.tx; tyi=f.ty; } else if(f.type==='box'){ txi=f.x+4; tyi=(f.y - th - 4 < 0) ? (f.y+4) : (f.y - th - 4); } else { txi=f.x2+8; tyi=f.y2 - th - 8; } const colors=getTagColors(f); o.fillStyle=colors.bg; roundRect(o,txi,tyi,tw,th,6,true,false); o.fillStyle=colors.text; o.fillText(tag,txi+6,tyi+th-6); }); drawNotesTo(o); const dataURL = out.toDataURL(type==='jpg'?'image/jpeg':'image/png', 0.92); download(`ppap-annotated.${type==='jpg'?'jpg':'png'}`, dataURL); }
+  function drawNotesTo(o){ notes.forEach(n=>{ o.fillStyle='rgba(10,16,28,0.88)'; roundRect(o,n.x,n.y,n.w,n.h,8,true,false); o.strokeStyle='#6cf4c5'; o.lineWidth=1.5; o.strokeRect(n.x+0.5,n.y+0.5,n.w-1,n.h-1); const cx=n.x+n.w-18, cy=n.y+6, cs=12; o.fillStyle='rgba(255,93,108,0.2)'; roundRect(o,cx,cy,cs,cs,3,true,false); o.strokeStyle='#ff5d6c'; o.strokeRect(cx+0.5,cy+0.5,cs-1,cs-1); o.beginPath(); o.moveTo(cx+3,cy+3); o.lineTo(cx+cs-3,cy+cs-3); o.moveTo(cx+cs-3,cy+3); o.lineTo(cx+3,cy+cs-3); o.strokeStyle='#ff5d6c'; o.lineWidth=1; o.stroke(); o.fillStyle='#e6f0ff'; o.font='12px ui-sans-serif,system-ui'; const pad=8; drawWrapped(o, n.text||'', n.x+pad, n.y+pad+14, n.w-2*pad, 16); }); }
+  function drawWrapped(c, text, x, y, maxWidth, lineHeight){ const words=String(text||'').split(/\s+/); let line=''; for(let i=0;i<words.length;i++){ const test=line?line+' '+words[i]:words[i]; if(c.measureText(test).width>maxWidth && line){ c.fillText(line, x, y); line=words[i]; y+=lineHeight; } else { line=test; } } if(line) c.fillText(line,x,y); }
+
+  btnSavePNG.addEventListener('click', ()=> exportImage('png'));
+  btnSaveJPG.addEventListener('click', ()=> exportImage('jpg'));
+  btnSaveJSON.addEventListener('click', ()=>{ const data={ meta:'ppap-feature-json', feats, legend, tagStyle, notes }; const blob=new Blob([JSON.stringify(data)], {type:'application/json'}); download('ppap-annotations.json', URL.createObjectURL(blob)); });
+
+  // Add Comment
+  btnAddNote.addEventListener('click', ()=>{ if(!imgLoaded){ showToast('Load an image first'); return; } const n={id:nextNoteId++, x:Math.max(6,view.cx-60), y:Math.max(6,view.cy-40), w:180, h:80, text: prompt('Comment text?', '')||''}; resizeNoteToText(n); notes.push(n); draw(); });
+
+  function syncTagPickers(){ colTagBg.value = tagStyle.bg; colTagBgA.value = Math.round(tagStyle.bgA*100); colTagText.value = tagStyle.text; colCritBg.value = tagStyle.critBg; colCritBgA.value = Math.round(tagStyle.critBgA*100); colCritText.value = tagStyle.critText; }
+  [colTagBg,colTagText,colCritBg,colCritText].forEach(inp=> inp.addEventListener('input', ()=>{ tagStyle.bg=colTagBg.value; tagStyle.text=colTagText.value; tagStyle.critBg=colCritBg.value; tagStyle.critText=colCritText.value; draw(); }));
+  [colTagBgA,colCritBgA].forEach(inp=> inp.addEventListener('input', ()=>{ tagStyle.bgA=(parseInt(colTagBgA.value,10)||80)/100; tagStyle.critBgA=(parseInt(colCritBgA.value,10)||85)/100; draw(); }));
+
+  // Anchors
+  btnAnchorsToggle.addEventListener('click', ()=>{ anchorsVisible=!anchorsVisible; draw(); });
+  btnAnchNom.addEventListener('click', ()=>{ if(selectedId==null){ showToast('Select a feature first'); return; } anchorPlacing='nom'; });
+  btnAnchMin.addEventListener('click', ()=>{ if(selectedId==null){ showToast('Select a feature first'); return; } anchorPlacing='min'; });
+  btnAnchMax.addEventListener('click', ()=>{ if(selectedId==null){ showToast('Select a feature first'); return; } anchorPlacing='max'; });
+  btnAnchClear.addEventListener('click', ()=>{ if(selectedId==null){ showToast('Select a feature first'); return; } const f=feats.find(x=>x.id===selectedId); if(f){ f.anchors={nom:null,min:null,max:null}; draw(); } });
+
+  // Ask GPT Jen menu (static for now)
+  const btnAsk=document.getElementById('btn-ask');
+  btnAsk.addEventListener('click', ()=> askWrap.classList.toggle('open'));
+  askMenu.addEventListener('click',(e)=>{
+    const it=e.target.closest('.menu-item'); if(!it) return; const act=it.getAttribute('data-action');
+    if(act==='askSoon'){ showToast('Voice/text Q&A coming soon'); }
+    if(act==='guide'){
+      alert(`USER GUIDE — PPAP Feature Marker\n\n1) Load: PNG/JPG via \"Load Image\" or Import a PDF page (📄).\n2) Draw: Pick Box or Arrow, hit Draw, drag on canvas.\n3) Select: Click a feature to move it; drag the number tag to reposition it.\n4) Anchors: Toggle ⚓ then set Nom/Min/Max on a selected feature.\n5) Comments: Click 📝 Add Comment. Drag to move, click the small X to delete.\n6) Colours: Use Tag/Critical colour pickers + opacity sliders.\n7) Save out: ⬆️ PNG/JPG for an image, ⬆️ JSON to save everything for later.\n8) Zoom: Use slider or 🔍 Zoom Area then drag a rectangle. Press F to fit.`);
+    }
+    if(act==='hotkeys'){
+      alert(`HOTKEYS\nR — toggle Draw\nS — Select\nF — Fit\nDelete/Backspace — delete selected feature\nD — (hold) drag the legend`);
+    }
   });
 
-  // Load PNG/JPG/JSON
-  function loadFile(f){
-    const name=f.name.toLowerCase();
-    if(name.endsWith('.json')){
-      const reader=new FileReader();
-      reader.onload=()=>{
-        try{
-          const data=JSON.parse(reader.result);
-          if(data && data.meta==='ppap-feature-json'){
-            feats=(data.feats||[]); nextId=(Math.max(0,...feats.map(x=>x.id||0))+1)||1; selectedId=null; draw(); showToast('Annotations loaded');
-          }else showToast('Not a PPAP Feature JSON');
-        }catch{ showToast('Invalid JSON'); }
-      };
-      reader.readAsText(f); return;
-    }
-    if(!name.endsWith('.png')&&!name.endsWith('.jpg')&&!name.endsWith('.jpeg')){ showToast('Use PNG or JPG'); return; }
-    const url=URL.createObjectURL(f);
-    img=new Image();
-    img.onload=()=>{ URL.revokeObjectURL(url); imgLoaded=true; feats=[]; nextId=1; selectedId=null; view.cx=img.width/2; view.cy=img.height/2; fitCanvas(); requestAnimationFrame(fitCanvas); showToast('Image loaded'); };
-    img.onerror=()=>{ URL.revokeObjectURL(url); showToast('Image failed to load'); };
-    img.src=url;
-  }
-
-  // ===== PDF handling =====
-  async function ensurePdfJs(){
-    if(window.pdfjsLib){ pdfStatus.textContent='pdf.js: CDN'; return true; }
-    try{
-      await loadScript('./vendor/pdfjs/pdf.min.js',2500);
-      if(window.pdfjsLib){ pdfjsLib.GlobalWorkerOptions.workerSrc='./vendor/pdfjs/pdf.worker.min.js'; pdfStatus.textContent='pdf.js: local'; return true; }
-    }catch{}
-    pdfStatus.textContent='pdf.js: not found'; return false;
-  }
-  function loadScript(src,timeoutMs=3000){ return new Promise((res,rej)=>{ const s=document.createElement('script'); s.src=src; s.onload=()=>res(); s.onerror=()=>rej(); document.head.appendChild(s); setTimeout(()=>rej(),timeoutMs); }); }
-
-  async function openPdfModal(file){
-    const ok=await ensurePdfJs(); if(!ok){ showToast('pdf.js unavailable'); return; }
-    pdfModal.classList.add('show'); pdfMeta.textContent=' '+file.name;
-    const ab=await file.arrayBuffer(); const loadingTask=pdfjsLib.getDocument({data:ab});
-    const pdf=await loadingTask.promise;
-    pdfPageNum.max=String(pdf.numPages); pdfPageSlider.max=String(pdf.numPages);
-    pdfPageNum.value='1'; pdfPageSlider.value='1';
-    const renderPrev=async()=>{
-      const pageNo=parseInt(pdfPageNum.value,10)||1;
-      const dpi=parseInt(pdfDpi.value,10)||300; pdfDpiVal.textContent=dpi+' dpi';
-      const page=await pdf.getPage(pageNo); const scale=dpi/72;
-      const vp=page.getViewport({scale});
-      pdfPreview.width=Math.round(vp.width); pdfPreview.height=Math.round(vp.height);
-      pdfPrevCtx.imageSmoothingEnabled=false;
-      await page.render({canvasContext:pdfPrevCtx,viewport:vp}).promise;
-    };
-    pdfPageNum.oninput=()=>{pdfPageSlider.value=pdfPageNum.value; renderPrev();};
-    pdfPageSlider.oninput=()=>{pdfPageNum.value=pdfPageSlider.value; renderPrev();};
-    pdfDpi.oninput=()=>{pdfDpiVal.textContent=pdfDpi.value+' dpi'; renderPrev();};
-    pdfCancel.onclick=pdfClose.onclick=()=>{pdfModal.classList.remove('show');};
-    pdfImport.onclick=async()=>{
-      const pageNo=parseInt(pdfPageNum.value,10)||1;
-      const dpi=parseInt(pdfDpi.value,10)||300;
-      const page=await pdf.getPage(pageNo); const scale=dpi/72; const vp=page.getViewport({scale});
-      const out=document.createElement('canvas'); out.width=Math.round(vp.width); out.height=Math.round(vp.height);
-      const octx=out.getContext('2d'); octx.imageSmoothingEnabled=false;
-      await page.render({canvasContext:octx,viewport:vp}).promise;
-      const dataURL=out.toDataURL('image/png');
-      const tmp=new Image(); tmp.onload=()=>{ img=tmp; imgLoaded=true; feats=[]; nextId=1; selectedId=null; view.cx=img.width/2; view.cy=img.height/2; fitCanvas(); requestAnimationFrame(fitCanvas); showToast(`Imported page ${pageNo} @ ${dpi} dpi`); pdfModal.classList.remove('show'); }; tmp.src=dataURL;
-    };
-    await renderPrev();
-  }
-
-  // Start
+  // pickers sync at init
+  syncTagPickers();
   fitCanvas();
+  requestAnimationFrame(fitCanvas);
+  // Utilities to support legend dragging + finishing touches
+  function legendInit(){ /* placeholder in case we expand later */ }
 
-})();
+  // expose minimal API if needed later
+  window.__PPAP_R62 = { addNote:(text='')=>{ const n={id:nextNoteId++, x:Math.max(6,view.cx-60), y:Math.max(6,view.cy-40), w:180, h:80, text}; resizeNoteToText(n); notes.push(n); draw(); return n.id; } };
+
+})(); // <-- end IIFE
 </script>
-<!-- ===== Simple Draw Overlay (works anywhere) ===== -->
-<style>
-  #fm-draw-toolbar{
-    position:fixed; right:16px; bottom:16px; z-index:2147483646;
-    display:flex; gap:6px; padding:6px 8px; border-radius:12px;
-    background:rgba(18,20,24,.95); border:1px solid #2a2f37; backdrop-filter:blur(6px);
-    font:12px/1 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color:#e7eaf0;
-  }
-  #fm-draw-toolbar button{
-    border:1px solid #3a414d; border-radius:9px; padding:6px 10px; cursor:pointer;
-    background:#1b1f27; color:#e7eaf0; user-select:none;
-  }
-  #fm-draw-toolbar button.active{ outline:2px solid #50b6ff; }
-  #fm-annot{
-    position:fixed; inset:0; width:100vw; height:100vh; 
-    z-index:2147483645; pointer-events:none;
-  }
-</style>
-
-<div id="fm-draw-toolbar">
-  <button type="button" data-tool="rect"  title="Draw rectangle (drag)">▭ Box</button>
-  <button type="button" data-tool="arrow" title="Draw arrow (drag)">➜ Arrow</button>
-  <button type="button" data-tool="clear" title="Clear all">🧹 Clear</button>
-  <button type="button" data-tool="off"   title="Exit (Esc)">✕ Exit</button>
-</div>
-<svg id="fm-annot" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <marker id="fm-arrowhead" orient="auto" markerWidth="8" markerHeight="8" refX="8" refY="4">
-      <path d="M0,0 L8,4 L0,8 Z" fill="#50b6ff"></path>
-    </marker>
-  </defs>
-</svg>
-
-<script>
-(()=> {
-  const STROKE='#50b6ff', FILL='rgba(80,182,255,0.10)', WIDTH=2;
-  const svg = document.getElementById('fm-annot');
-  const ui  = document.getElementById('fm-draw-toolbar');
-
-  let mode='off', cur=null;
-  function setMode(m){
-    mode=m;
-    ui.querySelectorAll('button').forEach(b=>b.classList.toggle('active', b.dataset.tool===m));
-    svg.style.pointerEvents = (m==='rect'||m==='arrow')? 'auto':'none';
-  }
-
-  ui.addEventListener('click', e=>{
-    const b=e.target.closest('button[data-tool]'); if(!b) return;
-    const t=b.dataset.tool;
-    if(t==='clear'){ [...svg.querySelectorAll('rect,line')].forEach(n=>n.remove()); return; }
-    if(t==='off'){ setMode('off'); return; }
-    setMode(t);
-  });
-  window.addEventListener('keydown', e=>{ if(e.key==='Escape') setMode('off'); });
-
-  // Helper: event->SVG coordinates
-  function pt(evt){
-    const p=svg.createSVGPoint(); p.x=evt.clientX; p.y=evt.clientY;
-    return p.matrixTransform(svg.getScreenCTM().inverse());
-  }
-
-  svg.addEventListener('mousedown', (e)=>{
-    if(mode!=='rect' && mode!=='arrow') return;
-    e.preventDefault(); e.stopPropagation();
-    const {x,y}=pt(e);
-    if(mode==='rect'){
-      const r=document.createElementNS(svg.namespaceURI,'rect');
-      r.setAttribute('x',x); r.setAttribute('y',y);
-      r.setAttribute('width',0); r.setAttribute('height',0);
-      r.setAttribute('fill',FILL); r.setAttribute('stroke',STROKE); r.setAttribute('stroke-width',WIDTH);
-      svg.appendChild(r); cur={el:r,x0:x,y0:y,type:'rect'};
-    } else {
-      const ln=document.createElementNS(svg.namespaceURI,'line');
-      ln.setAttribute('x1',x); ln.setAttribute('y1',y);
-      ln.setAttribute('x2',x); ln.setAttribute('y2',y);
-      ln.setAttribute('stroke',STROKE); ln.setAttribute('stroke-width',WIDTH);
-      ln.setAttribute('marker-end','url(#fm-arrowhead)');
-      svg.appendChild(ln); cur={el:ln,x0:x,y0:y,type:'arrow'};
-    }
-  });
-
-  svg.addEventListener('mousemove', (e)=>{
-    if(!cur) return;
-    const {x,y}=pt(e);
-    if(cur.type==='rect'){
-      const x1=Math.min(cur.x0,x), y1=Math.min(cur.y0,y);
-      const w=Math.abs(x-cur.x0), h=Math.abs(y-cur.y0);
-      cur.el.setAttribute('x',x1); cur.el.setAttribute('y',y1);
-      cur.el.setAttribute('width',w); cur.el.setAttribute('height',h);
-    } else {
-      cur.el.setAttribute('x2',x); cur.el.setAttribute('y2',y);
-    }
-  });
-  const end=()=> cur=null;
-  svg.addEventListener('mouseup', end);
-  svg.addEventListener('mouseleave', ()=>{ if(cur) end(); });
-
-  setMode('off'); // start idle
-})();
-</script>
-<!-- ===== end Simple Draw Overlay ===== -->
 </body>
 </html>
-
-
 
 
 
